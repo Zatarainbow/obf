@@ -61,7 +61,7 @@ const Navbar = () => {
                 onClick={() => navigate("/app")}
                 className="bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(187_100%_50%/0.4)]"
               >
-                Mở công cụ
+                Bắt đầu obf
               </Button>
             </div>
 
@@ -91,7 +91,7 @@ const Navbar = () => {
                   className="w-full bg-gradient-to-r from-primary to-accent text-white"
                   onClick={() => { setIsOpen(false); navigate("/app"); }}
                 >
-                  Mở công cụ
+                  Bắt đầu obf
                 </Button>
               </div>
             </div>

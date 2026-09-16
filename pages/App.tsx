@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { CodeEditor } from "@/components/CodeEditor";
 import {
   obfuscateCode,
   obfuscateFile,
@@ -51,6 +52,8 @@ const ObfuscateDashboard = () => {
   const [code, setCode] = useState(DEFAULT_CODE);
   const [watermark, setWatermark] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [loadingStage, setLoadingStage] = useState("");
   const [error, setError] = useState<ApiError | null>(null);
   const [resultLink, setResultLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -59,7 +62,6 @@ const ObfuscateDashboard = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setHistory(getHistory());
@@ -75,8 +77,28 @@ const ObfuscateDashboard = () => {
     }
 
     setIsLoading(true);
+    setProgress(15);
+    setLoadingStage("Đang nạp mã nguồn & phân tích AST Python...");
     setError(null);
     setResultLink(null);
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev < 35) {
+          setLoadingStage("Đang làm phẳng luồng điều khiển (Deep Control Flow)...");
+          return prev + 6;
+        }
+        if (prev < 68) {
+          setLoadingStage("Biên dịch sang WebAssembly & ảo hóa KVM 2.0 VM...");
+          return prev + 4;
+        }
+        if (prev < 92) {
+          setLoadingStage("Đóng gói bảo vệ & tải lên Catbox Moe...");
+          return prev + 2;
+        }
+        return prev;
+      });
+    }, 350);
 
     try {
       let response;
@@ -97,6 +119,8 @@ const ObfuscateDashboard = () => {
         });
       }
 
+      setProgress(100);
+      setLoadingStage("Mã hóa hoàn tất!");
       setResultLink(response.link);
       const updatedHistory = addToHistory({
         watermark: watermark || "(không có)",
@@ -115,6 +139,7 @@ const ObfuscateDashboard = () => {
         description: apiError.details,
       });
     } finally {
+      clearInterval(timer);
       setIsLoading(false);
     }
   }, [code, fileContent, fileName, watermark]);
@@ -167,7 +192,6 @@ const ObfuscateDashboard = () => {
     toast.success("Đã xóa lịch sử");
   }, []);
 
-  const lineCount = code.split("\n").length;
   const charCount = code.length;
 
   return (
@@ -282,38 +306,24 @@ const ObfuscateDashboard = () => {
                 </div>
               )}
 
-              {/* Code textarea */}
-              <div className="relative code-window scan-line">
-                <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                    <span className="ml-2 text-xs text-muted-foreground font-mono-code">
-                      {fileName || "main.py"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    <span>{lineCount} dòng</span>
-                    <span>{charCount} ký tự</span>
-                    <span className="font-mono-code">Python</span>
-                  </div>
-                </div>
-                <textarea
-                  ref={textareaRef}
-                  value={code}
-                  onChange={(e) => {
-                    setCode(e.target.value);
-                    if (fileName) {
-                      setFileName(null);
-                      setFileContent(null);
-                    }
-                  }}
-                  className="w-full h-80 p-4 bg-transparent text-sm font-mono-code text-foreground/90 placeholder:text-muted-foreground/50 resize-none focus:outline-none leading-relaxed"
-                  placeholder="# Dán mã Python vào đây..."
-                  spellCheck={false}
-                />
-              </div>
+              {/* VSCode-style Code Editor */}
+              <CodeEditor
+                code={code}
+                onChange={(newCode) => {
+                  setCode(newCode);
+                  if (fileName) {
+                    setFileName(null);
+                    setFileContent(null);
+                  }
+                }}
+                fileName={fileName}
+                onReset={() => {
+                  setCode(DEFAULT_CODE);
+                  setFileName(null);
+                  setFileContent(null);
+                  toast.info("Đã khôi phục mã mẫu!");
+                }}
+              />
             </div>
 
             {/* Active Protection & Watermark */}
@@ -355,6 +365,35 @@ const ObfuscateDashboard = () => {
               </div>
             </div>
 
+            {/* Animated Loading Bar when Obfuscating */}
+            {isLoading && (
+              <div className="p-4 rounded-xl glass border border-primary/40 neon-border animate-fadeIn space-y-3 bg-gradient-to-r from-primary/10 via-background to-accent/10 shadow-[0_0_30px_hsl(187_100%_50%/0.15)]">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2 font-mono-code text-foreground font-medium">
+                    <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                    <span className="truncate">{loadingStage || "Đang xử lý mã nguồn..."}</span>
+                  </div>
+                  <span className="font-mono-code text-primary font-bold text-sm shrink-0 ml-2">
+                    {Math.min(100, Math.round(progress))}%
+                  </span>
+                </div>
+
+                <div className="relative h-2.5 w-full bg-secondary/80 rounded-full overflow-hidden border border-border/40 p-[1px]">
+                  <div
+                    className="h-full bg-gradient-to-r from-primary via-accent to-primary transition-all duration-300 rounded-full shadow-[0_0_12px_hsl(187_100%_50%/0.7)]"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-muted-foreground font-mono-code">
+                  <span className="text-primary/90 flex items-center gap-1.5">
+                    <Shield className="w-3 h-3" /> Deep Control Flow • WASM • KVM 2.0
+                  </span>
+                  <span className="text-accent animate-pulse">obfpy.vercel.app</span>
+                </div>
+              </div>
+            )}
+
             {/* Obfuscate button */}
             <Button
               onClick={handleObfuscate}
@@ -365,12 +404,12 @@ const ObfuscateDashboard = () => {
               {isLoading ? (
                 <span className="flex items-center gap-2">
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Đang mã hóa...
+                  Đang mã hóa ({Math.min(100, Math.round(progress))}%)
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
                   <Shield className="w-5 h-5" />
-                  Obfuscate
+                  Bắt đầu obf
                   <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                 </span>
               )}

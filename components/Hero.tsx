@@ -113,7 +113,7 @@ const Hero = () => {
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
                 <span className="relative flex items-center">
-                  Mở công cụ
+                  Bắt đầu obf
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Button>
