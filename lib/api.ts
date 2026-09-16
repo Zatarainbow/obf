@@ -52,6 +52,13 @@ export async function obfuscateCode(options: ObfuscateOptions): Promise<Obfuscat
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
+      if (errorData?.error) {
+        const isSyntax = typeof errorData.error === "string" && errorData.error.includes("SyntaxError");
+        throw {
+          message: isSyntax ? "Lỗi cú pháp Python (Syntax Error)" : "Lỗi xử lý mã nguồn",
+          details: errorData.error,
+        } as ApiError;
+      }
       if (response.status === 422) {
         throw {
           message: "Dữ liệu không hợp lệ",
@@ -65,6 +72,12 @@ export async function obfuscateCode(options: ObfuscateOptions): Promise<Obfuscat
     }
 
     const data: ObfuscateResponse = await response.json();
+    if (data.status === "error" || !data.link) {
+      throw {
+        message: "Không thể mã hóa code",
+        details: (data as any).error || "Máy chủ không trả về liên kết tải mã nguồn đã mã hóa.",
+      } as ApiError;
+    }
     return data;
   } catch (err) {
     clearTimeout(timeoutId);
@@ -111,6 +124,13 @@ export async function obfuscateFile(
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
+      if (errorData?.error) {
+        const isSyntax = typeof errorData.error === "string" && errorData.error.includes("SyntaxError");
+        throw {
+          message: isSyntax ? "Lỗi cú pháp Python (Syntax Error)" : "Lỗi xử lý file",
+          details: errorData.error,
+        } as ApiError;
+      }
       if (response.status === 422) {
         throw {
           message: "File không hợp lệ",
@@ -124,6 +144,12 @@ export async function obfuscateFile(
     }
 
     const data: ObfuscateResponse = await response.json();
+    if (data.status === "error" || !data.link) {
+      throw {
+        message: "Không thể mã hóa file",
+        details: (data as any).error || "Máy chủ không trả về liên kết tải mã nguồn đã mã hóa.",
+      } as ApiError;
+    }
     return data;
   } catch (err) {
     clearTimeout(timeoutId);

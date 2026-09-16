@@ -1,4 +1,4 @@
-import { Shield, Lock, Zap, FileLock2, KeyRound, Eye, Fingerprint, Boxes, Cpu } from "lucide-react";
+import { Shield, Zap, FileLock2, KeyRound, Eye, Boxes, Cpu } from "lucide-react";
 
 const features = [
   {

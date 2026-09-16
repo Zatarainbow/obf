@@ -473,6 +473,29 @@ const ObfuscateDashboard = () => {
                   </a>
                 </div>
 
+                <div className="space-y-1.5 pt-1">
+                  <div className="text-xs text-muted-foreground flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <Terminal className="w-3.5 h-3.5 text-primary" />
+                      Lệnh chạy trực tiếp qua Terminal:
+                    </span>
+                    <button
+                      onClick={() => {
+                        const cmd = `curl -sL "${resultLink}" -o obf.py && python3 obf.py`;
+                        navigator.clipboard.writeText(cmd);
+                        toast.success("Đã sao chép lệnh chạy!");
+                      }}
+                      className="text-xs text-primary hover:underline flex items-center gap-1 font-mono-code"
+                    >
+                      <Copy className="w-3 h-3" />
+                      Copy CMD
+                    </button>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-black/60 border border-border/50 font-mono-code text-xs text-green-400 select-all overflow-x-auto whitespace-pre">
+                    curl -sL "{resultLink}" -o obf.py &amp;&amp; python3 obf.py
+                  </div>
+                </div>
+
                 <div className="flex flex-wrap gap-2">
                   <div className="px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary">
                     {deep ? "Deep: ON" : "Deep: OFF"}
