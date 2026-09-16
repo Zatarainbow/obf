@@ -1,41 +1,41 @@
-import { Shield, Lock, Zap, FileLock2, KeyRound, Eye, Fingerprint } from "lucide-react";
+import { Shield, Lock, Zap, FileLock2, KeyRound, Eye, Fingerprint, Boxes, Cpu } from "lucide-react";
 
 const features = [
   {
-    icon: FileLock2,
-    title: "Mã hóa mã nguồn",
-    description: "Mã hóa toàn bộ mã nguồn Python và JavaScript bằng thuật toán AES-256, đảm bảo không ai có thể đọc hoặc sao chép code của bạn.",
-    badge: "AES-256",
+    icon: Zap,
+    title: "Deep Control Flow Flattening",
+    description: "Làm phẳng luồng điều khiển và ẩn lời gọi hàm, khiến việc phân tích logic trở nên cực kỳ khó khăn.",
+    badge: "Deep",
+  },
+  {
+    icon: Boxes,
+    title: "WebAssembly Layer",
+    description: "Lớp binary đa nền tảng WASM, biên dịch code Python sang WebAssembly để bảo vệ cấp độ binary.",
+    badge: "WASM",
+  },
+  {
+    icon: Cpu,
+    title: "Custom Stack VM KVM 2.0",
+    description: "Máy ảo stack tùy chỉnh KVM 2.0, chạy code trong môi trường ảo hóa độc quyền, chống debug hiệu quả.",
+    badge: "KVM 2.0",
   },
   {
     icon: KeyRound,
-    title: "Quản lý khóa bí mật",
-    description: "Tự động tạo và quản lý khóa mã hóa an toàn. Mỗi file được bảo vệ bằng một khóa duy nhất, không thể crack.",
-    badge: "Key Rotation",
+    title: "Watermarking độc nhất",
+    description: "Nhúng watermark tác giả vào header file, giúp truy vết nguồn gốc nếu code bị rò rỉ trái phép.",
+    badge: "Watermark",
   },
   {
     icon: Eye,
-    title: "Chống reverse engineering",
-    description: "Làm rối code thông minh, xóa bỏ mọi comment, đổi tên biến và hàm, khiến việc dịch ngược trở nên bất khả thi.",
+    title: "Chống Reverse Engineering",
+    description: "Làm rối code thông minh, xóa comment, đổi tên biến và hàm, khiến việc dịch ngược gần như bất khả thi.",
     badge: "Anti-RE",
   },
   {
-    icon: Fingerprint,
-    title: "Watermarking",
-    description: "Nhúng watermark độc nhất vào mỗi bản phân phối, giúp truy vết nguồn gốc nếu code bị rò rỉ.",
-    badge: "Traceable",
-  },
-  {
-    icon: Zap,
-    title: "Tốc độ siêu nhanh",
-    description: "Xử lý hàng nghìn dòng code trong chưa tới 1 giây. Tối ưu hóa hiệu năng, không ảnh hưởng tốc độ chạy.",
-    badge: "<1s",
-  },
-  {
-    icon: Lock,
-    title: "Bảo vệ runtime",
-    description: "Ngăn chặn debug, anti-tamper, và phát hiện môi trường ảo. Code chỉ chạy trong môi trường được phép.",
-    badge: "Anti-Debug",
+    icon: FileLock2,
+    title: "Catbox Upload tự động",
+    description: "File đã mã hóa được tự động tải lên Catbox, trả về link tải an toàn, sẵn sàng phân phối.",
+    badge: "Catbox",
   },
 ];
 
@@ -55,7 +55,7 @@ const Features = () => {
             <span className="gradient-text">công nghệ tiên tiến</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Bộ công cụ bảo vệ mã nguồn toàn diện, từ mã hóa đến chống dịch ngược
+            Bộ công cụ bảo vệ mã nguồn Python toàn diện, từ Deep Obfuscation đến WebAssembly
           </p>
         </div>
 
@@ -67,7 +67,7 @@ const Features = () => {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Badge */}
-              <div className="absolute top-4 right-4 px-2 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono text-primary opacity-60 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-4 right-4 px-2 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary opacity-60 group-hover:opacity-100 transition-opacity">
                 {feature.badge}
               </div>
 

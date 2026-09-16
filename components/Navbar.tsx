@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Menu, X, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const navLinks = [
     { name: "Tính năng", href: "#products" },
     { name: "Quy trình", href: "#how-it-works" },
@@ -16,10 +18,10 @@ const Navbar = () => {
       {/* Announcement bar */}
       <div className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 border-b border-border/50">
         <div className="container mx-auto px-4 py-2 text-center text-sm text-muted-foreground">
-          <span className="text-primary">New:</span> Hỗ trợ TypeScript và watermarking độc nhất.{" "}
-          <a href="#products" className="text-foreground hover:text-primary transition-colors underline">
-            Tìm hiểu thêm →
-          </a>
+          <span className="text-primary">Meowt v5.2:</span> WebAssembly Layer & KVM 2.0 đã ra mắt.{" "}
+          <button onClick={() => navigate("/app")} className="text-foreground hover:text-primary transition-colors underline">
+            Thử ngay →
+          </button>
         </div>
       </div>
 
@@ -28,12 +30,15 @@ const Navbar = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <a href="/" className="flex items-center gap-2 group">
+            <button onClick={() => navigate("/")} className="flex items-center gap-2 group">
               <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Shield className="w-5 h-5 text-white" />
               </div>
-              <span className="font-semibold text-lg">Obfuscator</span>
-            </a>
+              <div className="flex items-baseline gap-2">
+                <span className="font-semibold text-lg">Meowt</span>
+                <span className="text-xs text-muted-foreground font-mono-code">v5.2</span>
+              </div>
+            </button>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
@@ -52,11 +57,12 @@ const Navbar = () => {
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                Đăng nhập
-              </Button>
-              <Button size="sm" className="bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(270_100%_65%/0.4)]">
-                Dùng thử miễn phí
+              <Button
+                size="sm"
+                onClick={() => navigate("/app")}
+                className="bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(187_100%_50%/0.4)]"
+              >
+                Mở công cụ
               </Button>
             </div>
 
@@ -82,11 +88,11 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="pt-4 space-y-2 border-t border-border/50">
-                <Button variant="ghost" className="w-full justify-start">
-                  Đăng nhập
-                </Button>
-                <Button className="w-full bg-gradient-to-r from-primary to-accent text-white">
-                  Dùng thử miễn phí
+                <Button
+                  className="w-full bg-gradient-to-r from-primary to-accent text-white"
+                  onClick={() => { setIsOpen(false); navigate("/app"); }}
+                >
+                  Mở công cụ
                 </Button>
               </div>
             </div>

@@ -8,11 +8,11 @@ const plans = [
     description: "Dành cho cá nhân thử nghiệm",
     features: [
       { text: "Obfuscate code cơ bản", included: true },
-      { text: "Hỗ trợ Python & JavaScript", included: true },
-      { text: "Tối đa 100 dòng / file", included: true },
-      { text: "Mã hóa AES-128", included: true },
-      { text: "Watermarking", included: false },
-      { text: "Anti-debug", included: false },
+      { text: "Deep Control Flow Flattening", included: true },
+      { text: "Tối đa 500 dòng / file", included: true },
+      { text: "Watermarking", included: true },
+      { text: "WebAssembly Layer", included: false },
+      { text: "KVM 2.0", included: false },
       { text: "Hỗ trợ ưu tiên", included: false },
     ],
     cta: "Bắt đầu miễn phí",
@@ -24,10 +24,10 @@ const plans = [
     period: "/tháng",
     description: "Dành cho freelancer & team nhỏ",
     features: [
-      { text: "Obfuscate code nâng cao", included: true },
-      { text: "Hỗ trợ Python & JavaScript", included: true },
+      { text: "Tất cả tính năng Free", included: true },
       { text: "Không giới hạn dòng code", included: true },
-      { text: "Mã hóa AES-256", included: true },
+      { text: "WebAssembly Layer", included: true },
+      { text: "Custom Stack VM KVM 2.0", included: true },
       { text: "Watermarking độc nhất", included: true },
       { text: "Anti-debug & anti-tamper", included: true },
       { text: "Hỗ trợ ưu tiên 24/7", included: true },
@@ -121,7 +121,7 @@ const Pricing = () => {
               <button
                 className={`w-full py-3 rounded-lg font-medium transition-all ${
                   plan.highlight
-                    ? "bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_30px_hsl(270_100%_65%/0.4)]"
+                    ? "bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_30px_hsl(187_100%_50%/0.4)]"
                     : "border border-border hover:border-primary/50 hover:bg-secondary/50 text-foreground"
                 }`}
               >

@@ -1,35 +1,35 @@
-import { Upload, Shield, Lock, Download } from "lucide-react";
+import { Upload, Settings, Shield, Download } from "lucide-react";
 
 const steps = [
   {
     icon: Upload,
-    title: "Tải lên mã nguồn",
-    description: "Kéo thả hoặc dán mã Python / JavaScript của bạn vào trình obfuscate. Hỗ trợ file .py, .js, .ts.",
+    title: "Dán code / Tải file",
+    description: "Dán mã Python trực tiếp vào trình soạn thảo hoặc kéo thả file .py từ máy tính của bạn.",
     step: "01",
   },
   {
-    icon: Shield,
-    title: "Cấu hình bảo vệ",
-    description: "Chọn mức độ obfuscate, bật/tắt mã hóa, watermark, anti-debug. Tùy chỉnh theo nhu cầu của bạn.",
+    icon: Settings,
+    title: "Chọn tùy chọn bảo vệ",
+    description: "Bật/tắt Deep Control Flow, WebAssembly Layer, KVM 2.0, và nhập watermark tác giả.",
     step: "02",
   },
   {
-    icon: Lock,
-    title: "Mã hóa tự động",
-    description: "Hệ thống mã hóa và làm rối code trong vài giây. Sử dụng AES-256 và kỹ thuật obfuscation tiên tiến.",
+    icon: Shield,
+    title: "Nhấn Obfuscate",
+    description: "Hệ thống mã hóa và làm rối code trong vài giây, sử dụng công nghệ Meowt v5.2.",
     step: "03",
   },
   {
     icon: Download,
-    title: "Tải xuống kết quả",
-    description: "Nhận file đã được bảo vệ, sẵn sàng để phân phối. Code vẫn chạy bình thường nhưng không thể đọc.",
+    title: "Tải file từ Catbox",
+    description: "Nhận link tải file .py đã được bảo vệ hoàn toàn từ Catbox, sẵn sàng phân phối.",
     step: "04",
   },
 ];
 
 const HowItWorks = () => {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section id="how-it-works" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 grid-bg opacity-[0.02]" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-accent/5 rounded-full blur-[120px]" />
 

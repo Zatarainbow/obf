@@ -4,6 +4,7 @@ import MatrixRain from "./MatrixRain";
 import ParticleField from "./ParticleField";
 import GlowingOrb from "./GlowingOrb";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AnimatedIcon = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
   <div
@@ -18,10 +19,11 @@ const AnimatedIcon = ({ children, delay = 0 }: { children: React.ReactNode; dela
 );
 
 const codeLines = [
+  { text: "# Meowt Obfuscator v5.2", color: "text-muted-foreground" },
   { text: "import hashlib, base64", color: "text-primary" },
   { text: "from cryptography.fernet import Fernet", color: "text-primary" },
   { text: "", color: "" },
-  { text: "def obfuscate(source):", color: "text-accent" },
+  { text: "def protect(source):", color: "text-accent" },
   { text: "    key = Fernet.generate_key()", color: "text-foreground/70" },
   { text: "    cipher = Fernet(key)", color: "text-foreground/70" },
   { text: "    encoded = cipher.encrypt(", color: "text-foreground/70" },
@@ -31,6 +33,7 @@ const codeLines = [
 ];
 
 const obfuscatedLines = [
+  { text: "# Meowt v5.2 | WM: Meow team", color: "text-muted-foreground/50" },
   { text: "gASVwAAAAAAAAACMBXBweeSlgLGSlgBG", color: "text-primary/60" },
   { text: "LgCMA2tleZSMA2FiY6QulgCWlIWUjAZG", color: "text-accent/60" },
   { text: "ZXJudJQulgCMA2VuY6QulgCMB2VuY29k", color: "text-primary/60" },
@@ -44,6 +47,7 @@ const obfuscatedLines = [
 ];
 
 const Hero = () => {
+  const navigate = useNavigate();
   const [showObfuscated, setShowObfuscated] = useState(false);
   const [visibleLines, setVisibleLines] = useState(0);
 
@@ -79,16 +83,16 @@ const Hero = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 text-sm text-muted-foreground group hover:border-primary/50 transition-colors cursor-default">
               <Sparkles className="w-4 h-4 text-accent animate-pulse" />
               <span className="relative">
-                Công cụ bảo vệ mã nguồn hàng đầu Việt Nam
+                Next-Generation Python Protection by Meow team
                 <span className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </span>
               <Zap className="w-4 h-4 text-primary animate-pulse" style={{ animationDelay: '500ms' }} />
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              <span className="gradient-text">Obfuscator</span>
+              <span className="gradient-text">Meowt</span>
               <br />
-              <span className="text-foreground">Python & JavaScript</span>
+              <span className="text-foreground">Python Obfuscator</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-xl">
@@ -97,19 +101,23 @@ const Hero = () => {
             </p>
 
             <p className="text-muted-foreground max-w-lg leading-relaxed">
-              Bảo vệ mã nguồn Python và JavaScript của bạn khỏi việc sao chép trái phép.
-              Mã hóa, làm rối và bảo mật code một cách chuyên nghiệp.
+              Next-Generation Cross-Platform Python Protection & WebAssembly Security.
+              Bảo vệ mã nguồn Python của bạn khỏi việc sao chép trái phép.
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="relative bg-foreground text-background hover:bg-foreground/90 group overflow-hidden">
+              <Button
+                size="lg"
+                onClick={() => navigate("/app")}
+                className="relative bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_40px_hsl(187_100%_50%/0.4)] group overflow-hidden"
+              >
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
                 <span className="relative flex items-center">
-                  Bắt đầu Obfuscate
+                  Mở công cụ
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Button>
-              <Button size="lg" variant="outline" className="gradient-border group relative overflow-hidden">
+              <Button size="lg" variant="outline" className="gradient-border group relative overflow-hidden" onClick={() => navigate("/app")}>
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="relative">Xem hướng dẫn</span>
               </Button>
@@ -118,18 +126,18 @@ const Hero = () => {
             {/* Mini stats */}
             <div className="flex gap-8 pt-4">
               <div>
-                <div className="text-2xl font-bold gradient-text">10M+</div>
-                <div className="text-sm text-muted-foreground">Dòng code đã bảo vệ</div>
+                <div className="text-2xl font-bold gradient-text">v5.2</div>
+                <div className="text-sm text-muted-foreground">Phiên bản</div>
               </div>
               <div className="w-px bg-border/50" />
               <div>
-                <div className="text-2xl font-bold gradient-text">99.9%</div>
-                <div className="text-sm text-muted-foreground">Tỷ lệ thành công</div>
+                <div className="text-2xl font-bold gradient-text">WASM</div>
+                <div className="text-sm text-muted-foreground">Cross-platform</div>
               </div>
               <div className="w-px bg-border/50" />
               <div>
-                <div className="text-2xl font-bold gradient-text">{"<"}1s</div>
-                <div className="text-sm text-muted-foreground">Tốc độ xử lý</div>
+                <div className="text-2xl font-bold gradient-text">KVM2</div>
+                <div className="text-sm text-muted-foreground">Custom VM</div>
               </div>
             </div>
           </div>
@@ -151,16 +159,16 @@ const Hero = () => {
                   <div className="w-3 h-3 rounded-full bg-green-500/80" />
                   <div className="ml-3 flex items-center gap-2 text-xs text-muted-foreground">
                     <Terminal className="w-3.5 h-3.5" />
-                    <span>{showObfuscated ? "obfuscated.py" : "source.py"}</span>
+                    <span className="font-mono-code">{showObfuscated ? "obfuscated.py" : "source.py"}</span>
                   </div>
                   <div className="ml-auto flex items-center gap-2">
                     <div className={`w-2 h-2 rounded-full ${showObfuscated ? "bg-accent animate-pulse" : "bg-primary animate-pulse"}`} />
-                    <span className="text-xs text-muted-foreground">{showObfuscated ? "Encrypted" : "Processing"}</span>
+                    <span className="text-xs text-muted-foreground">{showObfuscated ? "Protected" : "Processing"}</span>
                   </div>
                 </div>
 
                 {/* Code content */}
-                <div className="p-4 min-h-[340px] text-sm leading-relaxed">
+                <div className="p-4 min-h-[340px] text-sm leading-relaxed font-mono-code">
                   {displayLines.slice(0, Math.max(visibleLines, showObfuscated ? obfuscatedLines.length : 0)).map((line, i) => (
                     <div key={i} className="flex gap-3 group hover:bg-primary/5 -mx-4 px-4 transition-colors">
                       <span className="text-muted-foreground/40 select-none w-6 text-right">{i + 1}</span>
@@ -182,7 +190,7 @@ const Hero = () => {
                   <div className="flex items-center gap-3">
                     <FileCode2 className="w-3.5 h-3.5" />
                     <span>UTF-8</span>
-                    <span>Python</span>
+                    <span className="font-mono-code">Python</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {showObfuscated ? (
