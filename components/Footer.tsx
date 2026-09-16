@@ -44,7 +44,6 @@ const Footer = () => {
               <li><button onClick={() => navigate("/app")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Công cụ Obfuscate</button></li>
               <li><a href="#products" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Tính năng</a></li>
               <li><a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Quy trình</a></li>
-              <li><a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Bảng giá</a></li>
             </ul>
           </div>
 

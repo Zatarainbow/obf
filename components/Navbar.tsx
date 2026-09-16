@@ -9,7 +9,6 @@ const Navbar = () => {
   const navLinks = [
     { name: "Tính năng", href: "#products" },
     { name: "Quy trình", href: "#how-it-works" },
-    { name: "Bảng giá", href: "#pricing" },
     { name: "FAQ", href: "#docs" },
   ];
 

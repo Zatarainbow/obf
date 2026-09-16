@@ -21,7 +21,6 @@ import {
   ArrowLeft,
   Download,
 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -50,9 +49,6 @@ if __name__ == "__main__":
 const ObfuscateDashboard = () => {
   const navigate = useNavigate();
   const [code, setCode] = useState(DEFAULT_CODE);
-  const [deep, setDeep] = useState(true);
-  const [useWasm, setUseWasm] = useState(true);
-  const [useKvm2, setUseKvm2] = useState(true);
   const [watermark, setWatermark] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
@@ -86,18 +82,18 @@ const ObfuscateDashboard = () => {
       let response;
       if (fileContent && fileName) {
         response = await obfuscateFile(new File([fileContent], fileName), {
-          deep,
+          deep: true,
           user: watermark,
-          use_wasm: useWasm,
-          use_kvm2: useKvm2,
+          use_wasm: true,
+          use_kvm2: true,
         });
       } else {
         response = await obfuscateCode({
           code,
-          deep,
+          deep: true,
           user: watermark,
-          use_wasm: useWasm,
-          use_kvm2: useKvm2,
+          use_wasm: true,
+          use_kvm2: true,
         });
       }
 
@@ -121,7 +117,7 @@ const ObfuscateDashboard = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [code, fileContent, fileName, deep, watermark, useWasm, useKvm2]);
+  }, [code, fileContent, fileName, watermark]);
 
   const handleCopyLink = useCallback(async () => {
     if (!resultLink) return;
@@ -320,50 +316,23 @@ const ObfuscateDashboard = () => {
               </div>
             </div>
 
-            {/* Options */}
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div className="p-4 rounded-xl glass border border-border/50 neon-border">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Zap className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm">Deep Control Flow</div>
-                      <div className="text-xs text-muted-foreground mt-0.5">Làm phẳng luồng điều khiển & ẩn gọi hàm</div>
-                    </div>
-                  </div>
-                  <Switch checked={deep} onCheckedChange={setDeep} />
+            {/* Active Protection & Watermark */}
+            <div className="grid sm:grid-cols-[1fr_320px] gap-3">
+              <div className="p-4 rounded-xl glass border border-border/50 neon-border flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">Cơ chế bảo vệ (Tự động kích hoạt)</span>
                 </div>
-              </div>
-
-              <div className="p-4 rounded-xl glass border border-border/50 neon-border-accent">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
-                      <Boxes className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm">WebAssembly Layer</div>
-                      <div className="text-xs text-muted-foreground mt-0.5">Lớp binary đa nền tảng WASM</div>
-                    </div>
-                  </div>
-                  <Switch checked={useWasm} onCheckedChange={setUseWasm} />
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl glass border border-border/50 neon-border">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Cpu className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm">KVM 2.0</div>
-                      <div className="text-xs text-muted-foreground mt-0.5">Custom Stack VM KVM 2.0</div>
-                    </div>
-                  </div>
-                  <Switch checked={useKvm2} onCheckedChange={setUseKvm2} />
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary">
+                    <Zap className="w-3 h-3" /> Deep Control Flow
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-accent/10 border border-accent/20 text-xs font-mono-code text-accent">
+                    <Boxes className="w-3 h-3" /> WebAssembly Layer
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary">
+                    <Cpu className="w-3 h-3" /> KVM 2.0 VM
+                  </span>
                 </div>
               </div>
 
@@ -374,7 +343,7 @@ const ObfuscateDashboard = () => {
                   </div>
                   <div className="flex-1">
                     <div className="font-medium text-sm">Watermark tác giả</div>
-                    <div className="text-xs text-muted-foreground mt-0.5 mb-2">Nhúng tên bạn vào header file</div>
+                    <div className="text-xs text-muted-foreground mt-0.5 mb-2">Nhúng tên bạn vào header file (tùy chọn)</div>
                     <Input
                       value={watermark}
                       onChange={(e) => setWatermark(e.target.value)}
@@ -497,14 +466,14 @@ const ObfuscateDashboard = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  <div className="px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary">
-                    {deep ? "Deep: ON" : "Deep: OFF"}
+                  <div className="px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary flex items-center gap-1">
+                    <Zap className="w-3 h-3" /> Deep Control Flow
                   </div>
-                  <div className="px-2.5 py-1 rounded-md bg-accent/10 border border-accent/20 text-xs font-mono-code text-accent">
-                    {useWasm ? "WASM: ON" : "WASM: OFF"}
+                  <div className="px-2.5 py-1 rounded-md bg-accent/10 border border-accent/20 text-xs font-mono-code text-accent flex items-center gap-1">
+                    <Boxes className="w-3 h-3" /> WebAssembly
                   </div>
-                  <div className="px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary">
-                    {useKvm2 ? "KVM2: ON" : "KVM2: OFF"}
+                  <div className="px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary flex items-center gap-1">
+                    <Cpu className="w-3 h-3" /> KVM 2.0
                   </div>
                   {watermark && (
                     <div className="px-2.5 py-1 rounded-md bg-muted border border-border/50 text-xs font-mono-code text-muted-foreground">
