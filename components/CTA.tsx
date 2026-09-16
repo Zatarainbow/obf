@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Lock, Code2, Terminal } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CTA = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10" />
@@ -32,25 +35,29 @@ const CTA = () => {
             <span className="gradient-text">Bắt đầu bảo vệ</span> mã nguồn ngay hôm nay
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Tham gia cùng hàng nghìn lập trình viên đang sử dụng công cụ obfuscator của chúng tôi.
+            Tham gia cùng hàng nghìn lập trình viên đang sử dụng Meowt Obfuscator của Meow team.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 group relative overflow-hidden">
+            <Button
+              size="lg"
+              onClick={() => navigate("/app")}
+              className="bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_40px_hsl(187_100%_50%/0.4)] group relative overflow-hidden"
+            >
               <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
               <span className="relative flex items-center">
-                Bắt đầu miễn phí
+                Mở công cụ
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
             </Button>
-            <Button size="lg" variant="outline" className="gradient-border group relative overflow-hidden">
+            <Button size="lg" variant="outline" className="gradient-border group relative overflow-hidden" onClick={() => navigate("/app")}>
               <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <span className="relative">Liên hệ tư vấn</span>
+              <span className="relative">Xem hướng dẫn</span>
             </Button>
           </div>
 
           <p className="text-sm text-muted-foreground mt-6">
-            Không cần thẻ tín dụng. Dùng thử miễn phí 14 ngày.
+            Miễn phí. Không cần đăng ký. Bảo vệ code ngay lập tức.
           </p>
         </div>
       </div>

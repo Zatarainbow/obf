@@ -3,28 +3,28 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    question: "Obfuscator có ảnh hưởng đến hiệu năng code không?",
-    answer: "Không. Code đã obfuscate vẫn chạy với tốc độ gần như tương đương code gốc. Chúng tôi tối ưu hóa quá trình làm rối để đảm bảo hiệu năng tốt nhất, thường chỉ giảm 1-3% tốc độ.",
+    question: "Meowt có ảnh hưởng đến hiệu năng code không?",
+    answer: "Không đáng kể. Code đã obfuscate vẫn chạy với tốc độ gần như tương đương code gốc. Chúng tôi tối ưu hóa quá trình làm rối để đảm bảo hiệu năng tốt nhất, thường chỉ giảm 1-3% tốc độ thực thi.",
   },
   {
-    question: "Có thể dịch ngược code đã obfuscate không?",
-    answer: "Rất khó. Chúng tôi sử dụng nhiều lớp bảo vệ: mã hóa AES-256, đổi tên biến, xóa comment, anti-debug, và watermarking. Việc dịch ngược đòi hỏi thời gian và công sức khổng lồ, gần như không khả thi.",
+    question: "WebAssembly Layer hoạt động như thế nào?",
+    answer: "WASM Layer biên dịch một phần code Python sang WebAssembly binary, tạo lớp bảo vệ đa nền tảng. Code được nhúng trong WASM khó dịch ngược hơn nhiều so với Python thuần, vì WASM là định dạng binary cấp thấp.",
   },
   {
-    question: "Hỗ trợ những ngôn ngữ lập trình nào?",
-    answer: "Hiện tại chúng tôi hỗ trợ đầy đủ Python và JavaScript/TypeScript. Trong tương lai gần sẽ bổ sung thêm Java, C#, và Go.",
+    question: "KVM 2.0 (Custom Stack VM) là gì?",
+    answer: "KVM 2.0 là máy ảo stack tùy chỉnh do Meow team phát triển. Nó chạy code trong môi trường ảo hóa độc quyền, khiến việc debug và phân tích runtime trở nên cực kỳ khó khăn. KVM 2.0 là lớp bảo vệ mạnh nhất của Meowt.",
   },
   {
-    question: "Code đã obfuscate có chạy trên mọi môi trường không?",
-    answer: "Có. Code đã obfuscate chạy bình thường trên mọi môi trường Python/JavaScript tiêu chuẩn. Không cần cài thêm thư viện hay công cụ đặc biệt.",
+    question: "File đã obfuscate được lưu ở đâu?",
+    answer: "File .py đã mã hóa được tự động tải lên Catbox (catbox.moe) và trả về link tải trực tiếp. Bạn có thể chia sẻ link này an toàn - file đã được bảo vệ hoàn toàn và không thể đọc nội dung gốc.",
+  },
+  {
+    question: "Có giới hạn số dòng code không?",
+    answer: "Gói Free giới hạn 500 dòng/file. Gói Pro và Enterprise không giới hạn dòng code. Hệ thống xử lý hàng nghìn dòng code trong vài giây nhờ tối ưu hóa backend FastAPI.",
   },
   {
     question: "Dữ liệu code của tôi có được lưu trữ không?",
-    answer: "Không. Chúng tôi xử lý obfuscate trực tiếp và không lưu trữ mã nguồn của bạn. Toàn bộ quá trình diễn ra trong phiên làm việc của bạn, đảm bảo bảo mật tuyệt đối.",
-  },
-  {
-    question: "Có thể hủy gói đăng ký bất cứ lúc nào không?",
-    answer: "Có. Bạn có thể hủy gói đăng ký bất cứ lúc nào mà không phát sinh phí. Sau khi hủy, bạn vẫn sử dụng được dịch vụ đến hết kỳ thanh toán.",
+    answer: "Không. Chúng tôi xử lý obfuscate trực tiếp và không lưu trữ mã nguồn gốc của bạn. File kết quả được tải lên Catbox với link ngẫu nhiên, không thể đoán. Lịch sử obfuscate chỉ lưu trong trình duyệt của bạn (localStorage).",
   },
 ];
 
