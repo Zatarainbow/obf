@@ -1,4 +1,5 @@
 import { Shield, Lock, Code2, Terminal, FileCode2, KeyRound } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 const logos = [
   { icon: Shield, name: "FPT Software" },
@@ -16,12 +17,14 @@ const logos = [
 ];
 
 const TrustedBy = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="py-16 border-t border-b border-border/30 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
       <div className="container mx-auto px-4 relative z-10">
         <p className="text-center text-muted-foreground mb-8 text-sm uppercase tracking-wider">
-          Được tin dùng bởi các công ty hàng đầu
+          {t.trustedBy.title}
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {logos.map((logo, index) => (

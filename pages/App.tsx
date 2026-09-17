@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Shield,
   Lock,
@@ -30,6 +30,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { CodeEditor } from "@/components/CodeEditor";
+import { useLanguage } from "@/lib/i18n";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {
   obfuscateCode,
   obfuscateFile,
@@ -40,7 +42,7 @@ import {
   type ApiError,
 } from "@/lib/api";
 
-const DEFAULT_CODE = `# Meowt Obfuscator v5.2 - Ví dụ mẫu
+const DEFAULT_CODE_VI = `# Meowt Obfuscator v5.2 - Ví dụ mẫu
 import hashlib
 
 def hash_password(password: str) -> str:
@@ -52,34 +54,33 @@ if __name__ == "__main__":
     print(f"Mã băm: {hash_password(pwd)}")
 `;
 
-const protectionTips = [
-  {
-    icon: KeyRound,
-    title: "Watermark độc nhất",
-    description: "Nhúng tên tác giả vào header file để truy vết nguồn gốc khi bị rò rỉ.",
-  },
-  {
-    icon: Eye,
-    title: "Chống dịch ngược",
-    description: "Đổi tên biến, xóa comment, làm rối luồng điều khiển — dịch ngược gần như bất khả thi.",
-  },
-  {
-    icon: Code2,
-    title: "Tương thích Python 3.x",
-    description: "File đã mã hóa chạy được trên mọi môi trường Python 3, không cần thư viện phụ trợ.",
-  },
-];
+const DEFAULT_CODE_EN = `# Meowt Obfuscator v5.2 - Sample Code
+import hashlib
 
-const quickSteps = [
-  { step: "1", label: "Dán mã hoặc tải file .py" },
-  { step: "2", label: "Nhập watermark (tùy chọn)" },
-  { step: "3", label: "Nhấn nút Bảo vệ mã nguồn" },
-  { step: "4", label: "Nhận link tải từ Catbox" },
-];
+def hash_password(password: str) -> str:
+    """Hash password using SHA-256."""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+if __name__ == "__main__":
+    pwd = input("Enter password: ")
+    print(f"Password hash: {hash_password(pwd)}")
+`;
+
+const tipIcons = [KeyRound, Eye, Code2];
 
 const ObfuscateDashboard = () => {
   const navigate = useNavigate();
-  const [code, setCode] = useState(DEFAULT_CODE);
+  const location = useLocation();
+  const { t, lang, setLang } = useLanguage();
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/en") && lang !== "en") {
+      setLang("en");
+    }
+  }, [location.pathname, lang, setLang]);
+
+  const defaultSampleCode = lang === "en" ? DEFAULT_CODE_EN : DEFAULT_CODE_VI;
+  const [code, setCode] = useState(defaultSampleCode);
   const [watermark, setWatermark] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -100,30 +101,30 @@ const ObfuscateDashboard = () => {
   const handleObfuscate = useCallback(async () => {
     if (!code.trim() && !fileContent) {
       setError({
-        message: "Chưa có mã nguồn",
-        details: "Vui lòng dán mã Python hoặc tải file .py lên trước khi bảo vệ.",
+        message: t.app.noSourceTitle,
+        details: t.app.noSourceDesc,
       });
       return;
     }
 
     setIsLoading(true);
     setProgress(15);
-    setLoadingStage("Đang phân tích cú pháp AST Python...");
+    setLoadingStage(t.app.stages.s1);
     setError(null);
     setResultLink(null);
 
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev < 35) {
-          setLoadingStage("Đang làm phẳng luồng điều khiển (Deep Control Flow)...");
+          setLoadingStage(t.app.stages.s2);
           return prev + 6;
         }
         if (prev < 68) {
-          setLoadingStage("Đang biên dịch WebAssembly & ảo hóa KVM 2.0...");
+          setLoadingStage(t.app.stages.s3);
           return prev + 4;
         }
         if (prev < 92) {
-          setLoadingStage("Đang đóng gói & tải lên Catbox...");
+          setLoadingStage(t.app.stages.s4);
           return prev + 2;
         }
         return prev;
@@ -150,17 +151,17 @@ const ObfuscateDashboard = () => {
       }
 
       setProgress(100);
-      setLoadingStage("Bảo vệ mã nguồn hoàn tất!");
+      setLoadingStage(t.app.stages.s5);
       setResultLink(response.link);
       const updatedHistory = addToHistory({
-        watermark: watermark || "(không có)",
+        watermark: watermark || (lang === "vi" ? "(không có)" : "(none)"),
         codeLength: fileContent?.length || code.length,
         link: response.link,
         timestamp: Date.now(),
       });
       setHistory(updatedHistory);
-      toast.success("Bảo vệ mã nguồn thành công!", {
-        description: "File đã được mã hóa và tải lên Catbox.",
+      toast.success(t.app.successTitle, {
+        description: t.app.successSub,
       });
     } catch (err) {
       const apiError = err as ApiError;
@@ -172,23 +173,23 @@ const ObfuscateDashboard = () => {
       clearInterval(timer);
       setIsLoading(false);
     }
-  }, [code, fileContent, fileName, watermark]);
+  }, [code, fileContent, fileName, watermark, t, lang]);
 
   const handleCopyLink = useCallback(async () => {
     if (!resultLink) return;
     try {
       await navigator.clipboard.writeText(resultLink);
       setCopied(true);
-      toast.success("Đã sao chép liên kết!");
+      toast.success(t.app.copyToast);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Không thể sao chép");
+      toast.error(t.app.copyFailedToast);
     }
-  }, [resultLink]);
+  }, [resultLink, t]);
 
   const handleFileSelect = useCallback((file: File) => {
     if (!file.name.endsWith(".py")) {
-      toast.error("Chỉ hỗ trợ file .py");
+      toast.error(t.app.onlyPyToast);
       return;
     }
     const reader = new FileReader();
@@ -197,10 +198,10 @@ const ObfuscateDashboard = () => {
       setFileContent(content);
       setFileName(file.name);
       setCode(content);
-      toast.success(`Đã tải lên: ${file.name}`);
+      toast.success(`${t.app.uploadedToast} ${file.name}`);
     };
     reader.readAsText(file);
-  }, []);
+  }, [t]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -212,15 +213,15 @@ const ObfuscateDashboard = () => {
   const handleClearFile = useCallback(() => {
     setFileName(null);
     setFileContent(null);
-    setCode(DEFAULT_CODE);
+    setCode(defaultSampleCode);
     if (fileInputRef.current) fileInputRef.current.value = "";
-  }, []);
+  }, [defaultSampleCode]);
 
   const handleClearHistory = useCallback(() => {
     clearHistory();
     setHistory([]);
-    toast.success("Đã xóa lịch sử");
-  }, []);
+    toast.success(t.app.clearHistoryToast);
+  }, [t]);
 
   const charCount = code.length;
   const lineCount = code.length > 0 ? code.split("\n").length : 0;
@@ -237,7 +238,7 @@ const ObfuscateDashboard = () => {
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span className="text-sm hidden md:inline">Về trang chủ</span>
+                <span className="text-sm hidden md:inline">{t.app.home}</span>
               </button>
               <div className="w-px h-6 bg-border/50" />
               <div className="flex items-center gap-2">
@@ -254,7 +255,7 @@ const ObfuscateDashboard = () => {
             <div className="flex items-center gap-3">
               <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/50 border border-border/50">
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs text-muted-foreground">Máy chủ: obfpy.vercel.app</span>
+                <span className="text-xs text-muted-foreground">{t.app.serverLabel} obfpy.vercel.app</span>
               </div>
               <a
                 href="https://obfpy.vercel.app/docs"
@@ -263,8 +264,10 @@ const ObfuscateDashboard = () => {
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
               >
                 <Terminal className="w-4 h-4" />
-                <span className="hidden md:inline">Tài liệu API</span>
+                <span className="hidden md:inline">{t.app.apiDocs}</span>
               </a>
+              <div className="w-px h-4 bg-border/50 hidden sm:block" />
+              <LanguageSwitcher />
             </div>
           </div>
         </div>
@@ -278,20 +281,19 @@ const ObfuscateDashboard = () => {
             <div className="space-y-3 animate-fadeIn">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-border/50 text-xs text-muted-foreground">
                 <Sparkles className="w-3 h-3 text-primary" />
-                <span>Công cụ bảo vệ mã nguồn Python bởi Meow team</span>
+                <span>{lang === "vi" ? "Công cụ bảo vệ mã nguồn Python bởi Meow team" : "Python source code protection tool by Meow team"}</span>
               </div>
               <h1 className="text-3xl md:text-4xl font-bold">
-                <span className="gradient-text">Meowt</span> Obfuscator
+                <span className="gradient-text">{t.app.title}</span> {t.app.titleSuffix}
               </h1>
               <p className="text-muted-foreground text-sm max-w-2xl">
-                Bảo vệ mã nguồn Python toàn diện với Deep Control Flow Flattening, WebAssembly Layer và máy ảo KVM 2.0.
-                Dán code hoặc tải file .py, nhấn một nút — nhận link tải file đã mã hóa.
+                {t.hero.desc}
               </p>
             </div>
 
             {/* Quick guide */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 animate-fadeIn">
-              {quickSteps.map((s, i) => (
+              {t.app.quickSteps.map((s, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-2.5 p-3 rounded-lg glass border border-border/50 hover:border-primary/30 transition-colors"
@@ -312,7 +314,7 @@ const ObfuscateDashboard = () => {
                     <FileCode2 className="w-5 h-5 text-primary" />
                     <div>
                       <div className="text-sm font-medium">{fileName}</div>
-                      <div className="text-xs text-muted-foreground">{charCount} bytes • {lineCount} dòng</div>
+                      <div className="text-xs text-muted-foreground">{charCount} {t.app.historyChars} • {lineCount} {t.app.editor.lines}</div>
                     </div>
                   </div>
                   <button
@@ -348,7 +350,7 @@ const ObfuscateDashboard = () => {
                     className="w-full flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
                   >
                     <Upload className="w-4 h-4" />
-                    <span>Kéo thả file .py vào đây hoặc nhấn để chọn file</span>
+                    <span>{t.app.dragDrop}</span>
                   </button>
                 </div>
               )}
@@ -365,10 +367,10 @@ const ObfuscateDashboard = () => {
                 }}
                 fileName={fileName}
                 onReset={() => {
-                  setCode(DEFAULT_CODE);
+                  setCode(defaultSampleCode);
                   setFileName(null);
                   setFileContent(null);
-                  toast.info("Đã khôi phục mã mẫu!");
+                  toast.info(t.app.codeExampleResetToast);
                 }}
               />
             </div>
@@ -378,7 +380,7 @@ const ObfuscateDashboard = () => {
               <div className="p-4 rounded-xl glass border border-border/50 neon-border flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-2">
                   <Shield className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">Lớp bảo vệ (tự động bật)</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">{t.app.activeProtection}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-xs font-mono-code text-primary">
@@ -399,12 +401,12 @@ const ObfuscateDashboard = () => {
                     <Lock className="w-5 h-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
-                    <div className="font-medium text-sm">Watermark tác giả</div>
-                    <div className="text-xs text-muted-foreground mt-0.5 mb-2">Nhúng tên bạn vào header file (tùy chọn)</div>
+                    <div className="font-medium text-sm">{t.app.watermarkLabel}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5 mb-2">{t.app.watermarkSub}</div>
                     <Input
                       value={watermark}
                       onChange={(e) => setWatermark(e.target.value)}
-                      placeholder="vd: Meow team"
+                      placeholder={t.app.watermarkPlaceholder}
                       className="h-8 text-xs bg-background/50"
                     />
                   </div>
@@ -418,7 +420,7 @@ const ObfuscateDashboard = () => {
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2 font-mono-code text-foreground font-medium">
                     <Loader2 className="w-4 h-4 text-primary animate-spin" />
-                    <span className="truncate">{loadingStage || "Đang xử lý mã nguồn..."}</span>
+                    <span className="truncate">{loadingStage || t.app.stages.s1}</span>
                   </div>
                   <span className="font-mono-code text-primary font-bold text-sm shrink-0 ml-2">
                     {Math.min(100, Math.round(progress))}%
@@ -451,12 +453,12 @@ const ObfuscateDashboard = () => {
               {isLoading ? (
                 <span className="flex items-center gap-2">
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Đang bảo vệ mã nguồn ({Math.min(100, Math.round(progress))}%)
+                  {t.app.btnProcessing} ({Math.min(100, Math.round(progress))}%)
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
                   <Shield className="w-5 h-5" />
-                  Bảo vệ mã nguồn
+                  {t.app.btnObfuscate}
                   <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                 </span>
               )}
@@ -489,8 +491,8 @@ const ObfuscateDashboard = () => {
                     <Check className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <div className="font-semibold text-sm">Bảo vệ mã nguồn thành công!</div>
-                    <div className="text-xs text-muted-foreground">File đã được mã hóa và tải lên Catbox</div>
+                    <div className="font-semibold text-sm">{t.app.successTitle}</div>
+                    <div className="text-xs text-muted-foreground">{t.app.successSub}</div>
                   </div>
                 </div>
 
@@ -504,7 +506,7 @@ const ObfuscateDashboard = () => {
                   <button
                     onClick={handleCopyLink}
                     className="p-2 rounded-md hover:bg-secondary/50 transition-colors shrink-0"
-                    title="Sao chép liên kết"
+                    title={t.app.copyToast}
                   >
                     {copied ? (
                       <Check className="w-4 h-4 text-primary" />
@@ -517,7 +519,7 @@ const ObfuscateDashboard = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-md hover:bg-secondary/50 transition-colors shrink-0"
-                    title="Mở trong tab mới"
+                    title={t.app.openProtectedFile}
                   >
                     <ExternalLink className="w-4 h-4 text-muted-foreground" />
                   </a>
@@ -525,7 +527,7 @@ const ObfuscateDashboard = () => {
                     href={resultLink}
                     download
                     className="p-2 rounded-md hover:bg-secondary/50 transition-colors shrink-0"
-                    title="Tải file về máy"
+                    title="Download"
                   >
                     <Download className="w-4 h-4 text-muted-foreground" />
                   </a>
@@ -535,18 +537,18 @@ const ObfuscateDashboard = () => {
                   <div className="text-xs text-muted-foreground flex items-center justify-between">
                     <span className="flex items-center gap-1.5">
                       <Terminal className="w-3.5 h-3.5 text-primary" />
-                      Lệnh chạy trực tiếp qua Terminal:
+                      {t.app.runDirectCommand}
                     </span>
                     <button
                       onClick={() => {
                         const cmd = `curl -sL "${resultLink}" -o obf.py && python3 obf.py`;
                         navigator.clipboard.writeText(cmd);
-                        toast.success("Đã sao chép lệnh!");
+                        toast.success(t.app.copyCmdToast);
                       }}
                       className="text-xs text-primary hover:underline flex items-center gap-1 font-mono-code"
                     >
                       <Copy className="w-3 h-3" />
-                      Sao chép lệnh
+                      {t.app.copyCmdBtn}
                     </button>
                   </div>
                   <div className="p-2.5 rounded-lg bg-black/60 border border-border/50 font-mono-code text-xs text-green-400 select-all overflow-x-auto whitespace-pre">
@@ -577,21 +579,24 @@ const ObfuscateDashboard = () => {
             <div className="space-y-3 animate-fadeIn">
               <div className="flex items-center gap-2">
                 <Info className="w-4 h-4 text-accent" />
-                <span className="text-sm font-semibold">Lưu ý khi bảo vệ mã nguồn</span>
+                <span className="text-sm font-semibold">{t.app.tipSectionTitle}</span>
               </div>
               <div className="grid sm:grid-cols-3 gap-3">
-                {protectionTips.map((tip, i) => (
-                  <div
-                    key={i}
-                    className="p-4 rounded-xl glass border border-border/50 hover:border-primary/30 transition-colors group"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <tip.icon className="w-5 h-5 text-primary" />
+                {t.app.tips.map((tip, i) => {
+                  const Icon = tipIcons[i] || Shield;
+                  return (
+                    <div
+                      key={i}
+                      className="p-4 rounded-xl glass border border-border/50 hover:border-primary/30 transition-colors group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <Icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <h4 className="text-sm font-semibold mb-1 group-hover:text-primary transition-colors">{tip.title}</h4>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{tip.description}</p>
                     </div>
-                    <h4 className="text-sm font-semibold mb-1 group-hover:text-primary transition-colors">{tip.title}</h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{tip.description}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -603,13 +608,13 @@ const ObfuscateDashboard = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <History className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-sm">Lịch sử bảo vệ</span>
+                  <span className="font-medium text-sm">{t.app.sidebarHistory}</span>
                 </div>
                 {history.length > 0 && (
                   <button
                     onClick={handleClearHistory}
                     className="p-1.5 rounded-md hover:bg-secondary/50 transition-colors"
-                    title="Xóa toàn bộ lịch sử"
+                    title={t.app.clearHistoryTitle}
                   >
                     <Trash2 className="w-3.5 h-3.5 text-muted-foreground" />
                   </button>
@@ -619,7 +624,7 @@ const ObfuscateDashboard = () => {
               {history.length === 0 ? (
                 <div className="text-center py-8">
                   <History className="w-8 h-8 text-muted-foreground/30 mx-auto mb-2" />
-                  <p className="text-xs text-muted-foreground">Chưa có lịch sử bảo vệ mã nguồn</p>
+                  <p className="text-xs text-muted-foreground">{t.app.historyEmpty}</p>
                 </div>
               ) : (
                 <div className="space-y-2 max-h-[500px] overflow-y-auto">
@@ -633,14 +638,14 @@ const ObfuscateDashboard = () => {
                           {entry.watermark}
                         </span>
                         <span className="text-xs text-muted-foreground shrink-0">
-                          {new Date(entry.timestamp).toLocaleTimeString("vi-VN", {
+                          {new Date(entry.timestamp).toLocaleTimeString(lang === "vi" ? "vi-VN" : "en-US", {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
                         </span>
                       </div>
                       <div className="text-xs text-muted-foreground mb-2">
-                        {entry.codeLength} bytes
+                        {entry.codeLength} {t.app.historyChars}
                       </div>
                       <a
                         href={entry.link}
@@ -649,7 +654,7 @@ const ObfuscateDashboard = () => {
                         className="flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors"
                       >
                         <ExternalLink className="w-3 h-3" />
-                        <span className="truncate">Mở file đã mã hóa</span>
+                        <span className="truncate">{t.app.openProtectedFile}</span>
                       </a>
                     </div>
                   ))}
@@ -661,23 +666,23 @@ const ObfuscateDashboard = () => {
             <div className="rounded-xl glass border border-border/50 p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <Terminal className="w-4 h-4 text-accent" />
-                <span className="font-medium text-sm">Thông tin API</span>
+                <span className="font-medium text-sm">{t.app.apiInfoTitle}</span>
               </div>
               <div className="space-y-2 text-xs text-muted-foreground">
                 <div className="flex justify-between">
-                  <span>Đường dẫn:</span>
+                  <span>{t.app.apiPath}</span>
                   <span className="font-mono-code text-foreground/70">/obfuscate</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Phương thức:</span>
+                  <span>{t.app.apiMethod}</span>
                   <span className="font-mono-code text-foreground/70">POST</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Phiên bản:</span>
+                  <span>{t.app.apiVersion}</span>
                   <span className="font-mono-code text-foreground/70">5.2</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Lưu trữ:</span>
+                  <span>{t.app.apiStorage}</span>
                   <span className="font-mono-code text-foreground/70">Catbox</span>
                 </div>
               </div>
@@ -687,7 +692,7 @@ const ObfuscateDashboard = () => {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-full py-2 rounded-lg border border-border/50 hover:border-primary/30 hover:bg-secondary/50 transition-colors text-xs text-muted-foreground hover:text-foreground gap-1.5"
               >
-                Xem tài liệu API
+                {t.app.viewApiDocs}
                 <ChevronRight className="w-3 h-3" />
               </a>
             </div>
@@ -696,24 +701,24 @@ const ObfuscateDashboard = () => {
             <div className="rounded-xl glass border border-border/50 p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="font-medium text-sm">Thống kê phiên</span>
+                <span className="font-medium text-sm">{t.app.statsTitle}</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3 rounded-lg bg-background/50 border border-border/50 text-center">
                   <div className="text-2xl font-bold gradient-text">{lineCount}</div>
-                  <div className="text-xs text-muted-foreground mt-1">Dòng code</div>
+                  <div className="text-xs text-muted-foreground mt-1">{t.app.statsLines}</div>
                 </div>
                 <div className="p-3 rounded-lg bg-background/50 border border-border/50 text-center">
                   <div className="text-2xl font-bold gradient-text">{charCount}</div>
-                  <div className="text-xs text-muted-foreground mt-1">Ký tự</div>
+                  <div className="text-xs text-muted-foreground mt-1">{t.app.statsChars}</div>
                 </div>
                 <div className="p-3 rounded-lg bg-background/50 border border-border/50 text-center">
                   <div className="text-2xl font-bold gradient-text">{history.length}</div>
-                  <div className="text-xs text-muted-foreground mt-1">Lần đã bảo vệ</div>
+                  <div className="text-xs text-muted-foreground mt-1">{t.app.statsRuns}</div>
                 </div>
                 <div className="p-3 rounded-lg bg-background/50 border border-border/50 text-center">
                   <div className="text-2xl font-bold gradient-text">3</div>
-                  <div className="text-xs text-muted-foreground mt-1">Lớp bảo vệ</div>
+                  <div className="text-xs text-muted-foreground mt-1">{t.app.statsLayers}</div>
                 </div>
               </div>
             </div>

@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Lock, Code2, Terminal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/lib/i18n";
 
 const CTA = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <section className="py-24 relative overflow-hidden">
@@ -28,14 +30,14 @@ const CTA = () => {
         <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 text-sm text-muted-foreground mb-6">
             <Shield className="w-4 h-4 text-primary" />
-            <span>Bảo vệ ngay hôm nay</span>
+            <span>{t.cta.badge}</span>
           </div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">Bắt đầu bảo vệ</span> mã nguồn ngay hôm nay
+            <span className="gradient-text">{t.cta.heading1}</span> {t.cta.heading2}
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Tham gia cùng hàng nghìn lập trình viên đang sử dụng Meowt Obfuscator của Meow team.
+            {t.cta.desc}
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
@@ -46,18 +48,18 @@ const CTA = () => {
             >
               <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
               <span className="relative flex items-center">
-                Bắt đầu obf
+                {t.cta.btnStart}
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
             </Button>
             <Button size="lg" variant="outline" className="gradient-border group relative overflow-hidden" onClick={() => navigate("/app")}>
               <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <span className="relative">Xem hướng dẫn</span>
+              <span className="relative">{t.cta.btnDocs}</span>
             </Button>
           </div>
 
           <p className="text-sm text-muted-foreground mt-6">
-            Miễn phí. Không cần đăng ký. Bảo vệ code ngay lập tức.
+            {t.cta.note}
           </p>
         </div>
       </div>

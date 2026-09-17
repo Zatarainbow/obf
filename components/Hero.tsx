@@ -5,6 +5,7 @@ import ParticleField from "./ParticleField";
 import GlowingOrb from "./GlowingOrb";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/lib/i18n";
 
 const AnimatedIcon = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
   <div
@@ -48,12 +49,13 @@ const obfuscatedLines = [
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [showObfuscated, setShowObfuscated] = useState(false);
   const [visibleLines, setVisibleLines] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisibleLines((prev) => {
+      setVisibleLines(prev => {
         if (prev >= codeLines.length) {
           setTimeout(() => setShowObfuscated(true), 800);
           return prev;
@@ -61,19 +63,29 @@ const Hero = () => {
         return prev + 1;
       });
     }, 200);
+
     return () => clearInterval(interval);
   }, []);
 
-  const displayLines = showObfuscated ? obfuscatedLines : codeLines;
+  const activeLines = showObfuscated ? obfuscatedLines : codeLines;
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 pb-20">
+      {/* Particle Canvas */}
       <ParticleField />
+
+      {/* Animated gradient background */}
       <div className="absolute inset-0 animated-gradient" />
+
+      {/* Glowing orbs */}
       <GlowingOrb className="top-20 left-10" size="lg" color="primary" />
       <GlowingOrb className="bottom-20 right-20" size="xl" color="accent" />
       <GlowingOrb className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" size="xl" color="mixed" />
+
+      {/* Matrix rain background */}
       <MatrixRain />
+
+      {/* Grid pattern overlay */}
       <div className="absolute inset-0 grid-bg opacity-[0.03]" />
 
       <div className="container mx-auto px-4 relative z-20">
@@ -83,26 +95,25 @@ const Hero = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 text-sm text-muted-foreground group hover:border-primary/50 transition-colors cursor-default">
               <Sparkles className="w-4 h-4 text-accent animate-pulse" />
               <span className="relative">
-                Next-Generation Python Protection by Meow team
+                {t.hero.badge}
                 <span className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </span>
               <Zap className="w-4 h-4 text-primary animate-pulse" style={{ animationDelay: '500ms' }} />
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              <span className="gradient-text">Meowt</span>
+              <span className="gradient-text">{t.hero.title1}</span>
               <br />
-              <span className="text-foreground">Python Obfuscator</span>
+              <span className="text-foreground">{t.hero.title2}</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-xl">
-              <span className="text-foreground/80 font-medium">Bảo vệ tối đa</span>,{" "}
-              <span className="text-foreground/80 font-medium">dễ dàng</span> sử dụng
+              <span className="text-foreground/80 font-medium">{t.hero.subtitleHighlight1}</span>,{" "}
+              <span className="text-foreground/80 font-medium">{t.hero.subtitleHighlight2}</span> {t.hero.subtitleEnd}
             </p>
 
             <p className="text-muted-foreground max-w-lg leading-relaxed">
-              Next-Generation Cross-Platform Python Protection & WebAssembly Security.
-              Bảo vệ mã nguồn Python của bạn khỏi việc sao chép trái phép.
+              {t.hero.desc}
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -113,13 +124,13 @@ const Hero = () => {
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
                 <span className="relative flex items-center">
-                  Bắt đầu obf
+                  {t.hero.btnStart}
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Button>
               <Button size="lg" variant="outline" className="gradient-border group relative overflow-hidden" onClick={() => navigate("/app")}>
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="relative">Xem hướng dẫn</span>
+                <span className="relative">{t.hero.btnDocs}</span>
               </Button>
             </div>
 
@@ -127,17 +138,17 @@ const Hero = () => {
             <div className="flex gap-8 pt-4">
               <div>
                 <div className="text-2xl font-bold gradient-text">v5.2</div>
-                <div className="text-sm text-muted-foreground">Phiên bản</div>
+                <div className="text-sm text-muted-foreground">{t.hero.statVer}</div>
               </div>
               <div className="w-px bg-border/50" />
               <div>
                 <div className="text-2xl font-bold gradient-text">WASM</div>
-                <div className="text-sm text-muted-foreground">Cross-platform</div>
+                <div className="text-sm text-muted-foreground">{t.hero.statWasm}</div>
               </div>
               <div className="w-px bg-border/50" />
               <div>
                 <div className="text-2xl font-bold gradient-text">KVM2</div>
-                <div className="text-sm text-muted-foreground">Custom VM</div>
+                <div className="text-sm text-muted-foreground">{t.hero.statVm}</div>
               </div>
             </div>
           </div>
@@ -163,13 +174,13 @@ const Hero = () => {
                   </div>
                   <div className="ml-auto flex items-center gap-2">
                     <div className={`w-2 h-2 rounded-full ${showObfuscated ? "bg-accent animate-pulse" : "bg-primary animate-pulse"}`} />
-                    <span className="text-xs text-muted-foreground">{showObfuscated ? "Protected" : "Processing"}</span>
+                    <span className="text-xs text-muted-foreground">{showObfuscated ? t.hero.terminalProtected : t.hero.terminalProcessing}</span>
                   </div>
                 </div>
 
                 {/* Code content */}
                 <div className="p-4 min-h-[340px] text-sm leading-relaxed font-mono-code">
-                  {displayLines.slice(0, Math.max(visibleLines, showObfuscated ? obfuscatedLines.length : 0)).map((line, i) => (
+                  {activeLines.slice(0, Math.max(visibleLines, showObfuscated ? obfuscatedLines.length : 0)).map((line, i) => (
                     <div key={i} className="flex gap-3 group hover:bg-primary/5 -mx-4 px-4 transition-colors">
                       <span className="text-muted-foreground/40 select-none w-6 text-right">{i + 1}</span>
                       <span className={`${line.color} ${showObfuscated ? "encrypt-text" : ""} transition-all`}>

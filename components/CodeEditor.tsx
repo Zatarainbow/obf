@@ -3,6 +3,7 @@ import Prism from "prismjs";
 import "prismjs/components/prism-python";
 import { FileCode2, Copy, Check, RotateCcw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/lib/i18n";
 
 interface CodeEditorProps {
   code: string;
@@ -18,9 +19,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onChange,
   fileName,
   onReset,
-  placeholder = "# Dán hoặc gõ mã Python vào đây...",
+  placeholder,
   readOnly = false,
 }) => {
+  const { t } = useLanguage();
+  const defaultPlaceholder = placeholder || t.app.editor.placeholder;
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
@@ -90,16 +93,16 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      toast.success("Đã sao chép mã nguồn!");
+      toast.success(t.app.editor.copied);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Không thể sao chép");
+      toast.error(t.app.editor.copyFailed);
     }
   };
 
   const handleClear = () => {
     onChange("");
-    toast.info("Đã xóa mã nguồn");
+    toast.info(t.app.editor.cleared);
   };
 
   return (
@@ -133,9 +136,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         {/* Toolbar actions */}
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <div className="hidden md:flex items-center gap-3 mr-2 font-mono-code text-[11px] text-muted-foreground/70">
-            <span>{lineCount} dòng</span>
+            <span>{lineCount} {t.app.editor.lines}</span>
             <span>•</span>
-            <span>{charCount} ký tự</span>
+            <span>{charCount} {t.app.editor.chars}</span>
             <span>•</span>
             <span className="text-primary/90 font-semibold">Python 3.12</span>
           </div>
@@ -143,33 +146,33 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           <button
             type="button"
             onClick={handleCopy}
-            title="Sao chép mã"
+            title={t.app.editor.copy}
             className="p-1.5 rounded-md hover:bg-secondary/70 hover:text-foreground transition-colors flex items-center gap-1"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-primary" /> : <Copy className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline text-[11px]">Sao chép</span>
+            <span className="hidden sm:inline text-[11px]">{t.app.editor.copy}</span>
           </button>
 
           {onReset && (
             <button
               type="button"
               onClick={onReset}
-              title="Mã mẫu mặc định"
+              title={t.app.editor.sample}
               className="p-1.5 rounded-md hover:bg-secondary/70 hover:text-foreground transition-colors flex items-center gap-1"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline text-[11px]">Mẫu</span>
+              <span className="hidden sm:inline text-[11px]">{t.app.editor.sample}</span>
             </button>
           )}
 
           <button
             type="button"
             onClick={handleClear}
-            title="Xóa trắng"
+            title={t.app.editor.clear}
             className="p-1.5 rounded-md hover:bg-destructive/20 hover:text-destructive transition-colors flex items-center gap-1"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline text-[11px]">Xóa</span>
+            <span className="hidden sm:inline text-[11px]">{t.app.editor.clear}</span>
           </button>
         </div>
       </div>
@@ -201,7 +204,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             {highlightedCode ? (
               <code dangerouslySetInnerHTML={{ __html: highlightedCode + "\n" }} />
             ) : (
-              <span className="text-muted-foreground/30 italic">{placeholder}</span>
+              <span className="text-muted-foreground/30 italic">{defaultPlaceholder}</span>
             )}
           </pre>
 
@@ -217,7 +220,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             autoCapitalize="off"
             autoComplete="off"
             autoCorrect="off"
-            placeholder={placeholder}
+            placeholder={defaultPlaceholder}
             className="absolute inset-0 w-full h-full m-0 p-3 bg-transparent text-transparent caret-white font-mono text-[13px] leading-[22px] whitespace-pre resize-none outline-none overflow-auto z-10 selection:bg-primary/30 selection:text-transparent"
             style={{ tabSize: 4 }}
           />
@@ -229,7 +232,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 text-primary/80">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-            Meowt Engine Ready
+            {t.app.editor.engineReady}
           </span>
           <span className="hidden sm:inline">UTF-8</span>
           <span className="hidden sm:inline">Spaces: 4</span>

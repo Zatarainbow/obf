@@ -1,8 +1,10 @@
 import { Shield, Github, Twitter, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/lib/i18n";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <footer className="border-t border-border/50 py-16 relative overflow-hidden">
@@ -22,7 +24,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              Next-Generation Cross-Platform Python Protection & WebAssembly Security. Bảo vệ mã nguồn Python bởi Meow team.
+              {t.footer.desc}
             </p>
             <div className="flex gap-3">
               <a href="#" className="w-9 h-9 rounded-lg glass border border-border/50 flex items-center justify-center hover:border-primary/30 transition-colors">
@@ -31,7 +33,7 @@ const Footer = () => {
               <a href="#" className="w-9 h-9 rounded-lg glass border border-border/50 flex items-center justify-center hover:border-primary/30 transition-colors">
                 <Twitter className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-lg glass border border border-border/50 flex items-center justify-center hover:border-primary/30 transition-colors">
+              <a href="#" className="w-9 h-9 rounded-lg glass border border-border/50 flex items-center justify-center hover:border-primary/30 transition-colors">
                 <Mail className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
               </a>
             </div>
@@ -39,33 +41,33 @@ const Footer = () => {
 
           {/* Product links */}
           <div>
-            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">Sản phẩm</h4>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">{t.footer.colProducts}</h4>
             <ul className="space-y-2">
-              <li><button onClick={() => navigate("/app")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Công cụ Obfuscate</button></li>
-              <li><a href="#products" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Tính năng</a></li>
-              <li><a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Quy trình</a></li>
+              <li><button onClick={() => navigate("/app")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.toolObf}</button></li>
+              <li><a href="#products" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.features}</a></li>
+              <li><a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.workflow}</a></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">Tài nguyên</h4>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">{t.footer.colResources}</h4>
             <ul className="space-y-2">
-              <li><a href="https://obfpy.vercel.app/docs" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">API Docs</a></li>
-              <li><a href="https://obfpy.vercel.app/openapi.json" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">OpenAPI Schema</a></li>
-              <li><a href="#docs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Hướng dẫn</a></li>
+              <li><a href="https://obfpy.vercel.app/docs" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.apiDocs}</a></li>
+              <li><a href="https://obfpy.vercel.app/openapi.json" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.openapi}</a></li>
+              <li><a href="#docs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.faq}</a></li>
+              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.guide}</a></li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">Meow team</h4>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">{t.footer.colCompany}</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Về chúng tôi</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Liên hệ</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Điều khoản</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Bảo mật</a></li>
+              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.aboutUs}</a></li>
+              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.contact}</a></li>
+              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.terms}</a></li>
+              <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t.footer.privacy}</a></li>
             </ul>
           </div>
         </div>
@@ -73,7 +75,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © 2024 Meow team. All rights reserved.
+            {t.footer.rights}
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">Privacy</a>

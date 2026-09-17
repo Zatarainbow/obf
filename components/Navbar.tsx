@@ -2,14 +2,18 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Menu, X, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/lib/i18n";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
+
   const navLinks = [
-    { name: "Tính năng", href: "#products" },
-    { name: "Quy trình", href: "#how-it-works" },
-    { name: "FAQ", href: "#docs" },
+    { name: t.nav.features, href: "#products" },
+    { name: t.nav.howItWorks, href: "#how-it-works" },
+    { name: t.nav.faq, href: "#docs" },
   ];
 
   return (
@@ -17,9 +21,9 @@ const Navbar = () => {
       {/* Announcement bar */}
       <div className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 border-b border-border/50">
         <div className="container mx-auto px-4 py-2 text-center text-sm text-muted-foreground">
-          <span className="text-primary">Meowt v5.2:</span> WebAssembly Layer & KVM 2.0 đã ra mắt.{" "}
+          <span className="text-primary">Meowt v5.2:</span> {t.nav.announcement}{" "}
           <button onClick={() => navigate("/app")} className="text-foreground hover:text-primary transition-colors underline">
-            Thử ngay →
+            {t.nav.tryNow}
           </button>
         </div>
       </div>
@@ -54,21 +58,25 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="hidden md:flex items-center gap-2">
+            {/* CTA Buttons & Language Switcher */}
+            <div className="hidden md:flex items-center gap-2.5">
+              <LanguageSwitcher />
               <Button
                 size="sm"
                 onClick={() => navigate("/app")}
                 className="bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_20px_hsl(187_100%_50%/0.4)]"
               >
-                Bắt đầu obf
+                {t.nav.startObf}
               </Button>
             </div>
 
             {/* Mobile menu button */}
-            <button className="md:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="md:hidden flex items-center gap-2">
+              <LanguageSwitcher compact />
+              <button className="p-2" onClick={() => setIsOpen(!isOpen)}>
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -91,7 +99,7 @@ const Navbar = () => {
                   className="w-full bg-gradient-to-r from-primary to-accent text-white"
                   onClick={() => { setIsOpen(false); navigate("/app"); }}
                 >
-                  Bắt đầu obf
+                  {t.nav.startObf}
                 </Button>
               </div>
             </div>

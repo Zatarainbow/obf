@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 interface Stat {
   value: number;
@@ -6,13 +7,6 @@ interface Stat {
   label: string;
   decimals?: number;
 }
-
-const stats: Stat[] = [
-  { value: 10, suffix: "M+", label: "Dòng code đã bảo vệ" },
-  { value: 99.9, suffix: "%", label: "Tỷ lệ thành công", decimals: 1 },
-  { value: 50, suffix: "K+", label: "Lập trình viên tin dùng" },
-  { value: 0.8, suffix: "s", label: "Thời gian xử lý TB", decimals: 1 },
-];
 
 const useCountUp = (target: number, duration: number = 2000, decimals: number = 0, start: boolean) => {
   const [value, setValue] = useState(0);
@@ -51,6 +45,14 @@ const StatItem = ({ stat, start }: { stat: Stat; start: boolean }) => {
 const Stats = () => {
   const [startCounting, setStartCounting] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
+
+  const statsList: Stat[] = [
+    { value: 10, suffix: "M+", label: t.stats.s1 },
+    { value: 99.9, suffix: "%", label: t.stats.s2, decimals: 1 },
+    { value: 50, suffix: "K+", label: t.stats.s3 },
+    { value: 0.8, suffix: "s", label: t.stats.s4, decimals: 1 },
+  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -74,8 +76,8 @@ const Stats = () => {
           ref={ref}
           className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 rounded-2xl glass border border-border/50"
         >
-          {stats.map((stat, index) => (
-            <div key={index} className={index < stats.length - 1 ? "lg:border-r border-border/30" : ""}>
+          {statsList.map((stat, index) => (
+            <div key={index} className={index < statsList.length - 1 ? "lg:border-r border-border/30" : ""}>
               <StatItem stat={stat} start={startCounting} />
             </div>
           ))}
