@@ -25,11 +25,12 @@ import {
   Eye,
   Code2,
   ChevronRight,
+  Columns,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { CodeEditor } from "@/components/CodeEditor";
+import { CodeComparisonView } from "@/components/CodeComparisonView";
 import { useLanguage } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {
@@ -355,24 +356,28 @@ const ObfuscateDashboard = () => {
                 </div>
               )}
 
-              {/* VSCode-style Code Editor */}
-              <CodeEditor
-                code={code}
-                onChange={(newCode) => {
-                  setCode(newCode);
-                  if (fileName) {
+              {/* VSCode-style Code Editor & Comparison Suite */}
+              <div id="code-editor-suite">
+                <CodeComparisonView
+                  originalCode={code}
+                  watermark={watermark}
+                  resultLink={resultLink}
+                  fileName={fileName}
+                  onCodeChange={(newCode) => {
+                    setCode(newCode);
+                    if (fileName) {
+                      setFileName(null);
+                      setFileContent(null);
+                    }
+                  }}
+                  onResetCode={() => {
+                    setCode(defaultSampleCode);
                     setFileName(null);
                     setFileContent(null);
-                  }
-                }}
-                fileName={fileName}
-                onReset={() => {
-                  setCode(defaultSampleCode);
-                  setFileName(null);
-                  setFileContent(null);
-                  toast.info(t.app.codeExampleResetToast);
-                }}
-              />
+                    toast.info(t.app.codeExampleResetToast);
+                  }}
+                />
+              </div>
             </div>
 
             {/* Active Protection & Watermark */}
@@ -531,6 +536,17 @@ const ObfuscateDashboard = () => {
                   >
                     <Download className="w-4 h-4 text-muted-foreground" />
                   </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      document.getElementById("code-editor-suite")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="p-1.5 px-2.5 rounded-md bg-primary/10 hover:bg-primary/20 text-primary transition-colors shrink-0 flex items-center gap-1.5 text-xs font-medium border border-primary/30"
+                    title={t.app.comparison.viewDiffBtn}
+                  >
+                    <Columns className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">{t.app.comparison.viewDiffBtn}</span>
+                  </button>
                 </div>
 
                 <div className="space-y-1.5 pt-1">
