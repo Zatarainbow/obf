@@ -616,8 +616,6 @@
   .font-mono-code {
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
   }
-
-  /* VSCode One Dark / Pro Python Syntax Highlighting */
   .vscode-editor-token .token.keyword {
     color: #c678dd !important;
     font-weight: 600;
