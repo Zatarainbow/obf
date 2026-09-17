@@ -32,10 +32,10 @@ const StatItem = ({ stat, start }: { stat: Stat; start: boolean }) => {
 
   return (
     <div className="text-center group">
-      <div className="text-4xl md:text-5xl font-bold gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">
+      <div className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-1 sm:mb-2 group-hover:scale-105 sm:group-hover:scale-110 transition-transform duration-300">
         {displayValue}{stat.suffix}
       </div>
-      <div className="text-muted-foreground text-sm md:text-base">
+      <div className="text-muted-foreground text-xs sm:text-sm md:text-base px-1">
         {stat.label}
       </div>
     </div>
@@ -69,12 +69,12 @@ const Stats = () => {
   }, []);
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-10 sm:py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5" />
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-3 sm:px-4 relative z-10">
         <div
           ref={ref}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 rounded-2xl glass border border-border/50"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 py-6 sm:py-12 px-3 sm:px-6 rounded-2xl glass border border-border/50"
         >
           {statsList.map((stat, index) => (
             <div key={index} className={index < statsList.length - 1 ? "lg:border-r border-border/30" : ""}>

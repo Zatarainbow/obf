@@ -38,9 +38,9 @@ const HowItWorks = () => {
                 className="relative group"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="relative p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 card-glow">
+                <div className="relative p-5 sm:p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 card-glow">
                   {/* Step number */}
-                  <div className="absolute -top-4 -right-4 w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-transform">
+                  <div className="absolute top-4 right-4 sm:-top-3 sm:-right-3 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-lg group-hover:scale-110 transition-transform">
                     {step.step}
                   </div>
 

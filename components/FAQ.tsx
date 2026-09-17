@@ -7,21 +7,21 @@ const FAQ = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="docs" className="py-24 relative">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 text-sm text-muted-foreground mb-2">
+    <section id="docs" className="py-12 sm:py-20 md:py-24 relative">
+      <div className="container mx-auto px-3 sm:px-4 relative z-10">
+        <div className="text-center mb-10 sm:mb-16 space-y-3 sm:space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass border border-border/50 text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2">
             <span>{t.faq.badge}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold">
             {t.faq.heading1} <span className="gradient-text">{t.faq.heading2}</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
             {t.faq.desc}
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4">
           {t.faq.items.map((faq, index) => (
             <div
               key={index}
@@ -33,13 +33,13 @@ const FAQ = () => {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex items-center justify-between p-5 text-left group"
+                className="w-full flex items-center justify-between p-4 sm:p-5 text-left group min-h-[48px]"
               >
-                <span className={`font-medium transition-colors ${openIndex === index ? "text-primary" : "text-foreground group-hover:text-primary"}`}>
+                <span className={`font-medium text-sm sm:text-base pr-3 transition-colors ${openIndex === index ? "text-primary" : "text-foreground group-hover:text-primary"}`}>
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-muted-foreground shrink-0 transition-transform duration-300 ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground shrink-0 transition-transform duration-300 ${
                     openIndex === index ? "rotate-180 text-primary" : ""
                   }`}
                 />
@@ -50,7 +50,7 @@ const FAQ = () => {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <p className="px-5 pb-5 text-muted-foreground leading-relaxed">
+                  <p className="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

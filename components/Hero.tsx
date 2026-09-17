@@ -92,63 +92,68 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left content */}
           <div className="space-y-8 animate-fadeIn">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 text-sm text-muted-foreground group hover:border-primary/50 transition-colors cursor-default">
-              <Sparkles className="w-4 h-4 text-accent animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full glass border border-border/50 text-xs sm:text-sm text-muted-foreground group hover:border-primary/50 transition-colors cursor-default">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent animate-pulse" />
               <span className="relative">
                 {t.hero.badge}
                 <span className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </span>
-              <Zap className="w-4 h-4 text-primary animate-pulse" style={{ animationDelay: '500ms' }} />
+              <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary animate-pulse" style={{ animationDelay: '500ms' }} />
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
               <span className="gradient-text">{t.hero.title1}</span>
               <br />
               <span className="text-foreground">{t.hero.title2}</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-xl">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-xl">
               <span className="text-foreground/80 font-medium">{t.hero.subtitleHighlight1}</span>,{" "}
               <span className="text-foreground/80 font-medium">{t.hero.subtitleHighlight2}</span> {t.hero.subtitleEnd}
             </p>
 
-            <p className="text-muted-foreground max-w-lg leading-relaxed">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-lg leading-relaxed">
               {t.hero.desc}
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <Button
                 size="lg"
                 onClick={() => navigate("/app")}
-                className="relative bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_40px_hsl(187_100%_50%/0.4)] group overflow-hidden"
+                className="w-full sm:w-auto relative bg-gradient-to-r from-primary to-accent text-white hover:shadow-[0_0_40px_hsl(187_100%_50%/0.4)] group overflow-hidden h-12 px-6"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
-                <span className="relative flex items-center">
+                <span className="relative flex items-center justify-center">
                   {t.hero.btnStart}
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Button>
-              <Button size="lg" variant="outline" className="gradient-border group relative overflow-hidden" onClick={() => navigate("/app")}>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto gradient-border group relative overflow-hidden h-12 px-6"
+                onClick={() => navigate("/app")}
+              >
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="relative">{t.hero.btnDocs}</span>
               </Button>
             </div>
 
             {/* Mini stats */}
-            <div className="flex gap-8 pt-4">
+            <div className="grid grid-cols-3 sm:flex gap-3 sm:gap-8 pt-4">
               <div>
-                <div className="text-2xl font-bold gradient-text">v5.2</div>
-                <div className="text-sm text-muted-foreground">{t.hero.statVer}</div>
+                <div className="text-xl sm:text-2xl font-bold gradient-text">v5.2</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">{t.hero.statVer}</div>
               </div>
-              <div className="w-px bg-border/50" />
+              <div className="hidden sm:block w-px bg-border/50" />
               <div>
-                <div className="text-2xl font-bold gradient-text">WASM</div>
-                <div className="text-sm text-muted-foreground">{t.hero.statWasm}</div>
+                <div className="text-xl sm:text-2xl font-bold gradient-text">WASM</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">{t.hero.statWasm}</div>
               </div>
-              <div className="w-px bg-border/50" />
+              <div className="hidden sm:block w-px bg-border/50" />
               <div>
-                <div className="text-2xl font-bold gradient-text">KVM2</div>
-                <div className="text-sm text-muted-foreground">{t.hero.statVm}</div>
+                <div className="text-xl sm:text-2xl font-bold gradient-text">KVM2</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">{t.hero.statVm}</div>
               </div>
             </div>
           </div>
@@ -219,18 +224,18 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Floating mini icons */}
-              <div className="absolute -top-6 -left-6 animate-float" style={{ animationDelay: '0ms' }}>
+              {/* Floating mini icons (hidden on small mobile screens to prevent overflow) */}
+              <div className="hidden sm:block absolute -top-6 -left-6 animate-float" style={{ animationDelay: '0ms' }}>
                 <AnimatedIcon>
                   <Code2 className="w-8 h-8 text-primary" />
                 </AnimatedIcon>
               </div>
-              <div className="absolute -bottom-6 -right-6 animate-float" style={{ animationDelay: '500ms' }}>
+              <div className="hidden sm:block absolute -bottom-6 -right-6 animate-float" style={{ animationDelay: '500ms' }}>
                 <AnimatedIcon delay={500}>
                   <Lock className="w-8 h-8 text-accent" />
                 </AnimatedIcon>
               </div>
-              <div className="absolute top-1/2 -right-10 animate-float" style={{ animationDelay: '750ms' }}>
+              <div className="hidden sm:block absolute top-1/2 -right-10 animate-float" style={{ animationDelay: '750ms' }}>
                 <AnimatedIcon delay={750}>
                   <Shield className="w-7 h-7 text-primary" />
                 </AnimatedIcon>

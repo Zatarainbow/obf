@@ -191,7 +191,7 @@ export const CodeComparisonShowcase: React.FC = () => {
       {/* Background glow effects */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 rounded-full blur-[160px] pointer-events-none" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-3 sm:px-4 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12 space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-primary/30 text-xs font-semibold text-primary mb-2 shadow-[0_0_20px_hsl(187_100%_50%/0.2)]">
@@ -216,69 +216,73 @@ export const CodeComparisonShowcase: React.FC = () => {
         </div>
 
         {/* Toolbar & Tab Switcher */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 p-2 rounded-2xl bg-card/80 border border-border/60 glass shadow-lg">
-          <div className="flex items-center gap-1.5">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-4 p-2 rounded-2xl bg-card/80 border border-border/60 glass shadow-lg">
+          <div className="flex items-center gap-1 overflow-x-auto py-0.5">
             <button
               type="button"
               onClick={() => setActiveTab("diff")}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0 ${
                 activeTab === "diff"
                   ? "bg-primary text-primary-foreground shadow-[0_0_15px_hsl(187_100%_50%/0.3)]"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
-              <Columns className="w-4 h-4" />
-              <span>{isVi ? "So sánh trực quan (Side-by-Side)" : "Side-by-Side Comparison"}</span>
+              <Columns className="w-3.5 h-3.5" />
+              <span className="sm:hidden">{isVi ? "So sánh" : "Diff"}</span>
+              <span className="hidden sm:inline">{isVi ? "So sánh trực quan (Side-by-Side)" : "Side-by-Side Comparison"}</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("original")}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs md:text-sm font-medium transition-all shrink-0 ${
                 activeTab === "original"
                   ? "bg-secondary text-foreground border border-border/80 shadow-sm font-semibold"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
-              <FileCode2 className="w-4 h-4" />
-              <span>{isVi ? "Mã gốc (trycrackme.py)" : "Original (trycrackme.py)"}</span>
+              <FileCode2 className="w-3.5 h-3.5" />
+              <span className="sm:hidden">{isVi ? "Mã gốc" : "Original"}</span>
+              <span className="hidden sm:inline">{isVi ? "Mã gốc (trycrackme.py)" : "Original (trycrackme.py)"}</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("protected")}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs md:text-sm font-medium transition-all shrink-0 ${
                 activeTab === "protected"
                   ? "bg-gradient-to-r from-primary to-accent text-white shadow-sm font-semibold"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
-              <ShieldCheck className="w-4 h-4 text-accent" />
-              <span>{isVi ? "Mã đã bảo vệ (Meowt v5.2)" : "Fortified (Meowt v5.2)"}</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+              <span className="sm:hidden">{isVi ? "Mã bảo vệ" : "Fortified"}</span>
+              <span className="hidden sm:inline">{isVi ? "Mã đã bảo vệ (Meowt v5.2)" : "Fortified (Meowt v5.2)"}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             </button>
           </div>
 
           {/* Quick Action buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-stretch sm:self-auto justify-between sm:justify-end shrink-0">
             <a
               href="/trycrackme.py"
               download="trycrackme.py"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border/60 bg-secondary/40 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium border border-border/60 bg-secondary/40 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
               title="Tải mã nguồn gốc trycrackme.py"
             >
               <Download className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">trycrackme.py</span>
+              <span>trycrackme.py</span>
             </a>
 
             <a
               href="/trycrackme_obf.py"
               download="trycrackme_obf.py"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-colors shadow-[0_0_12px_hsl(187_100%_50%/0.15)]"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-colors shadow-[0_0_12px_hsl(187_100%_50%/0.15)]"
               title="Tải mã đã mã hóa trycrackme_obf.py (741 KB)"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>trycrackme_obf.py (741 KB)</span>
+              <span className="hidden sm:inline">trycrackme_obf.py (741 KB)</span>
+              <span className="sm:hidden">obf.py (741 KB)</span>
             </a>
           </div>
         </div>
@@ -314,7 +318,7 @@ export const CodeComparisonShowcase: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="relative flex-1 max-h-[460px] overflow-auto bg-[#0a0f18] text-xs font-mono-code p-3">
+                <div className="relative flex-1 max-h-[350px] sm:max-h-[460px] overflow-auto bg-[#0a0f18] text-xs font-mono-code p-3">
                   <div className="flex min-w-full">
                     <div className="pr-3 text-muted-foreground/40 select-none text-right font-mono-code text-[11px] border-r border-border/30">
                       {originalLines.map((_, i) => (
@@ -358,7 +362,7 @@ export const CodeComparisonShowcase: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="relative flex-1 max-h-[460px] overflow-auto bg-[#070c14] text-xs font-mono-code p-3">
+                <div className="relative flex-1 max-h-[350px] sm:max-h-[460px] overflow-auto bg-[#070c14] text-xs font-mono-code p-3">
                   <div className="flex min-w-full">
                     <div className="pr-3 text-muted-foreground/40 select-none text-right font-mono-code text-[11px] border-r border-border/30">
                       {protectedLines.map((_, i) => (
@@ -377,7 +381,7 @@ export const CodeComparisonShowcase: React.FC = () => {
             </div>
 
             {/* Security Metrics Comparison Table */}
-            <div className="rounded-2xl border border-border/60 bg-card/60 p-5 glass shadow-sm space-y-4">
+            <div className="rounded-2xl border border-border/60 bg-card/60 p-4 sm:p-5 glass shadow-sm space-y-4">
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-primary" />
                 <h4 className="text-sm font-semibold tracking-wide uppercase text-primary">
@@ -385,7 +389,7 @@ export const CodeComparisonShowcase: React.FC = () => {
                 </h4>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div className="p-3.5 rounded-xl border border-border/50 bg-background/50 space-y-1.5">
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Eye className="w-3.5 h-3.5 text-accent" />
@@ -456,7 +460,8 @@ export const CodeComparisonShowcase: React.FC = () => {
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-destructive/10 border border-destructive/20 text-destructive text-xs font-mono-code font-semibold flex items-center gap-1">
                   <ShieldAlert className="w-3.5 h-3.5" />
-                  {isVi ? "Chưa bảo vệ (Lộ logic keygen)" : "Unprotected Source"}
+                  <span className="hidden xs:inline">{isVi ? "Chưa bảo vệ (Lộ logic keygen)" : "Unprotected Source"}</span>
+                  <span className="xs:hidden">{isVi ? "Chưa bảo vệ" : "Unprotected"}</span>
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -479,9 +484,9 @@ export const CodeComparisonShowcase: React.FC = () => {
               </div>
             </div>
 
-            <div className="max-h-[500px] overflow-auto bg-[#0a0f18] p-4 text-xs font-mono-code">
+            <div className="max-h-[380px] sm:max-h-[500px] overflow-auto bg-[#0a0f18] p-3 sm:p-4 text-xs font-mono-code">
               <div className="flex min-w-full">
-                <div className="pr-4 text-muted-foreground/40 select-none text-right font-mono-code border-r border-border/30">
+                <div className="pr-3 sm:pr-4 text-muted-foreground/40 select-none text-right font-mono-code border-r border-border/30">
                   {originalLines.map((_, i) => (
                     <div key={i} className="leading-5 h-5">
                       {i + 1}
@@ -489,7 +494,7 @@ export const CodeComparisonShowcase: React.FC = () => {
                   ))}
                 </div>
                 <pre
-                  className="pl-4 flex-1 overflow-x-auto leading-5 font-mono-code text-[#e6edf3]"
+                  className="pl-3 sm:pl-4 flex-1 overflow-x-auto leading-5 font-mono-code text-[#e6edf3]"
                   dangerouslySetInnerHTML={{ __html: highlightedOriginal }}
                 />
               </div>
@@ -507,32 +512,34 @@ export const CodeComparisonShowcase: React.FC = () => {
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-primary/15 border border-primary/30 text-primary text-xs font-mono-code font-semibold flex items-center gap-1 animate-pulse">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  {isVi ? "Đã bảo vệ toàn diện (741 KB Binary)" : "Fortified Polymorphic Binary (741 KB)"}
+                  <span className="hidden xs:inline">{isVi ? "Đã bảo vệ toàn diện (741 KB Binary)" : "Fortified Binary (741 KB)"}</span>
+                  <span className="xs:hidden">741 KB</span>
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={handleCopyProtected}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                  className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 >
                   {copiedProtected ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{isVi ? "Sao chép toàn bộ mã" : "Copy Full Code"}</span>
+                  <span className="hidden sm:inline">{isVi ? "Sao chép toàn bộ mã" : "Copy Full Code"}</span>
+                  <span className="sm:hidden">{isVi ? "Sao chép" : "Copy"}</span>
                 </button>
                 <a
                   href="/trycrackme_obf.py"
                   download="trycrackme_obf.py"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                  className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  <span>{isVi ? "Tải trycrackme_obf.py" : "Download .py"}</span>
+                  <span>{isVi ? "Tải .py" : "Download"}</span>
                 </a>
               </div>
             </div>
 
-            <div className="max-h-[500px] overflow-auto bg-[#070c14] p-4 text-xs font-mono-code">
+            <div className="max-h-[380px] sm:max-h-[500px] overflow-auto bg-[#070c14] p-3 sm:p-4 text-xs font-mono-code">
               <div className="flex min-w-full">
-                <div className="pr-4 text-muted-foreground/40 select-none text-right font-mono-code border-r border-border/30">
+                <div className="pr-3 sm:pr-4 text-muted-foreground/40 select-none text-right font-mono-code border-r border-border/30">
                   {protectedLines.map((_, i) => (
                     <div key={i} className="leading-5 h-5">
                       {i + 1}
@@ -540,7 +547,7 @@ export const CodeComparisonShowcase: React.FC = () => {
                   ))}
                 </div>
                 <pre
-                  className="pl-4 flex-1 overflow-x-auto leading-5 font-mono-code text-[#38bdf8]"
+                  className="pl-3 sm:pl-4 flex-1 overflow-x-auto leading-5 font-mono-code text-[#38bdf8]"
                   dangerouslySetInnerHTML={{ __html: highlightedProtected }}
                 />
               </div>
@@ -549,7 +556,7 @@ export const CodeComparisonShowcase: React.FC = () => {
         )}
 
         {/* Interactive TryCrackMe Challenge Terminal Box */}
-        <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-card via-card to-primary/5 border border-primary/30 shadow-xl glass relative overflow-hidden">
+        <div className="mt-8 p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-card via-card to-primary/5 border border-primary/30 shadow-xl glass relative overflow-hidden">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
               <div className="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider">
@@ -566,22 +573,24 @@ export const CodeComparisonShowcase: React.FC = () => {
               </p>
 
               {/* Terminal command snippet */}
-              <div className="pt-2 flex flex-wrap items-center gap-3 text-xs">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/60 border border-border/60 font-mono-code text-foreground">
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 text-xs w-full">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-black/60 border border-border/60 font-mono-code text-foreground overflow-x-auto">
                   <span className="text-primary select-none">$</span>
                   <span>python3 trycrackme_obf.py</span>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 font-mono-code text-xs">
-                  <KeyRound className="w-3.5 h-3.5 text-primary shrink-0" />
-                  <span className="text-muted-foreground hidden sm:inline">
-                    {isVi ? "Key mẫu:" : "Test Key:"}
-                  </span>
-                  <span className="font-bold text-primary">MEOW-1337-PRO-26909F25</span>
+                <div className="flex items-center justify-between sm:justify-start gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 font-mono-code text-xs">
+                  <div className="flex items-center gap-1.5 overflow-hidden">
+                    <KeyRound className="w-3.5 h-3.5 text-primary shrink-0" />
+                    <span className="text-muted-foreground hidden sm:inline">
+                      {isVi ? "Key mẫu:" : "Test Key:"}
+                    </span>
+                    <span className="font-bold text-primary truncate">MEOW-1337-PRO-26909F25</span>
+                  </div>
                   <button
                     type="button"
                     onClick={handleCopyKey}
-                    className="p-1 hover:text-primary transition-colors ml-1"
+                    className="p-1 hover:text-primary transition-colors ml-1 shrink-0"
                     title="Copy test key"
                   >
                     {copiedKey ? <Check className="w-3.5 h-3.5 text-primary" /> : <Copy className="w-3.5 h-3.5" />}
@@ -595,7 +604,7 @@ export const CodeComparisonShowcase: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(lang === "en" ? "/en/app" : "/app")}
-                className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-primary to-accent text-white font-semibold text-sm shadow-[0_0_25px_hsl(187_100%_50%/0.3)] hover:shadow-[0_0_35px_hsl(187_100%_50%/0.5)] transition-all group"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-primary to-accent text-white font-semibold text-sm shadow-[0_0_25px_hsl(187_100%_50%/0.3)] hover:shadow-[0_0_35px_hsl(187_100%_50%/0.5)] transition-all group"
               >
                 <Shield className="w-4 h-4" />
                 <span>{isVi ? "Bắt đầu Obfuscate code của bạn" : "Obfuscate Your Own Code"}</span>

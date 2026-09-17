@@ -178,15 +178,15 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       </div>
 
       {/* Code Editor Body (Gutter + Highlighted Code + Input Textarea) */}
-      <div className="relative flex h-84 md:h-96 bg-[#141620] overflow-hidden">
+      <div className="relative flex h-64 sm:h-80 md:h-96 bg-[#141620] overflow-hidden">
         {/* Line Numbers Gutter */}
         <div
           ref={gutterRef}
           aria-hidden="true"
-          className="shrink-0 w-12 md:w-14 select-none bg-[#11121a] border-r border-border/40 py-3 text-right pr-3 font-mono text-[13px] leading-[22px] text-[#4b5263] overflow-hidden"
+          className="shrink-0 w-9 sm:w-12 md:w-14 select-none bg-[#11121a] border-r border-border/40 py-3 text-right pr-1.5 sm:pr-3 font-mono text-xs sm:text-[13px] leading-[20px] sm:leading-[22px] text-[#4b5263] overflow-hidden"
         >
           {lines.map((_, index) => (
-            <div key={index} className="h-[22px] leading-[22px]">
+            <div key={index} className="h-[20px] sm:h-[22px] leading-[20px] sm:leading-[22px]">
               {index + 1}
             </div>
           ))}
@@ -198,7 +198,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           <pre
             ref={preRef}
             aria-hidden="true"
-            className="vscode-editor-token pointer-events-none absolute inset-0 m-0 p-3 font-mono text-[13px] leading-[22px] whitespace-pre overflow-auto z-0 text-[#abb2bf] select-none"
+            className="vscode-editor-token pointer-events-none absolute inset-0 m-0 p-2.5 sm:p-3 font-mono text-xs sm:text-[13px] leading-[20px] sm:leading-[22px] whitespace-pre overflow-auto z-0 text-[#abb2bf] select-none"
             style={{ tabSize: 4 }}
           >
             {highlightedCode ? (
@@ -221,7 +221,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             autoComplete="off"
             autoCorrect="off"
             placeholder={defaultPlaceholder}
-            className="absolute inset-0 w-full h-full m-0 p-3 bg-transparent text-transparent caret-white font-mono text-[13px] leading-[22px] whitespace-pre resize-none outline-none overflow-auto z-10 selection:bg-primary/30 selection:text-transparent"
+            className="absolute inset-0 w-full h-full m-0 p-2.5 sm:p-3 bg-transparent text-transparent caret-white font-mono text-xs sm:text-[13px] leading-[20px] sm:leading-[22px] whitespace-pre resize-none outline-none overflow-auto z-10 selection:bg-primary/30 selection:text-transparent"
             style={{ tabSize: 4 }}
           />
         </div>

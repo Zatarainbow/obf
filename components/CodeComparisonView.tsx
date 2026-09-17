@@ -152,45 +152,48 @@ if __name__ == "__main__" or not _m_sys.flags.inspect:
     <div className="space-y-4">
       {/* Navigation Tabs */}
       <div className="flex flex-wrap items-center justify-between gap-3 p-1.5 rounded-xl bg-card border border-border/60 glass">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto">
           <button
             type="button"
             onClick={() => setActiveTab("original")}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
               activeTab === "original"
                 ? "bg-primary text-primary-foreground shadow-sm font-semibold"
                 : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
             }`}
           >
             <FileCode2 className="w-3.5 h-3.5" />
-            <span>{t.app.comparison.tabOriginal}</span>
+            <span className="sm:hidden">{lang === "vi" ? "Mã gốc" : "Original"}</span>
+            <span className="hidden sm:inline">{t.app.comparison.tabOriginal}</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab("protected")}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
               activeTab === "protected"
                 ? "bg-gradient-to-r from-primary to-accent text-white shadow-sm font-semibold"
                 : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-            <span>{t.app.comparison.tabProtected}</span>
+            <span className="sm:hidden">{lang === "vi" ? "Đã bảo vệ" : "Protected"}</span>
+            <span className="hidden sm:inline">{t.app.comparison.tabProtected}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab("diff")}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
               activeTab === "diff"
                 ? "bg-secondary text-foreground border border-border/80 shadow-sm font-semibold"
                 : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
             }`}
           >
             <Columns className="w-3.5 h-3.5 text-primary" />
-            <span>{t.app.comparison.tabDiff}</span>
+            <span className="sm:hidden">{lang === "vi" ? "So sánh" : "Diff"}</span>
+            <span className="hidden sm:inline">{t.app.comparison.tabDiff}</span>
           </button>
         </div>
 
