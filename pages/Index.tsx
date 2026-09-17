@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TrustedBy from "@/components/TrustedBy";
+import CodeComparisonShowcase from "@/components/CodeComparisonShowcase";
 import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Stats from "@/components/Stats";
@@ -15,6 +16,7 @@ const Index = () => {
       <main>
         <Hero />
         <TrustedBy />
+        <CodeComparisonShowcase />
         <Features />
         <HowItWorks />
         <Stats />

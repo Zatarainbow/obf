@@ -11,6 +11,7 @@ const Navbar = () => {
   const { t } = useLanguage();
 
   const navLinks = [
+    { name: t.nav.preview, href: "#preview" },
     { name: t.nav.features, href: "#products" },
     { name: t.nav.howItWorks, href: "#how-it-works" },
     { name: t.nav.faq, href: "#docs" },

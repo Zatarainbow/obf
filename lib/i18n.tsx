@@ -7,6 +7,7 @@ export const translations = {
     nav: {
       announcement: "Meowt v5.2: WebAssembly Layer & KVM 2.0 đã ra mắt.",
       tryNow: "Thử ngay →",
+      preview: "Xem trước & So sánh",
       features: "Tính năng",
       howItWorks: "Quy trình",
       faq: "FAQ",
@@ -284,6 +285,7 @@ export const translations = {
     nav: {
       announcement: "Meowt v5.2: WebAssembly Layer & KVM 2.0 is now live.",
       tryNow: "Try Now →",
+      preview: "Live Preview",
       features: "Features",
       howItWorks: "Workflow",
       faq: "FAQ",
